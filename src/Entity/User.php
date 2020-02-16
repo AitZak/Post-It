@@ -2,60 +2,80 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * User
+ *
+ * @ORM\Table(name="user")
+ * @ORM\Entity
  */
 class User
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @var int
+     *
+     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $lastname;
-
-    /**
-     * @ORM\Column(type="string", length=255)
+     * @var string
+     *
+     * @ORM\Column(name="firstname", type="string", length=255, nullable=false)
      */
     private $firstname;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @var string
+     *
+     * @ORM\Column(name="lastname", type="string", length=255, nullable=false)
      */
-    private $mail;
+    private $lastname;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=255, nullable=false)
+     */
+    private $email;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="password", type="string", length=255, nullable=false)
      */
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @var array
+     *
+     * @ORM\Column(name="role", type="simple_array", length=0, nullable=false)
      */
     private $role;
 
-    public function getId(): ?int
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="SocialNetwork", mappedBy="user")
+     */
+    private $socialNetwork;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->socialNetwork = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    public function getId(): ?string
     {
         return $this->id;
-    }
-
-    public function getLastname(): ?string
-    {
-        return $this->lastname;
-    }
-
-    public function setLastname(string $lastname): self
-    {
-        $this->lastname = $lastname;
-
-        return $this;
     }
 
     public function getFirstname(): ?string
@@ -70,14 +90,26 @@ class User
         return $this;
     }
 
-    public function getMail(): ?string
+    public function getLastname(): ?string
     {
-        return $this->mail;
+        return $this->lastname;
     }
 
-    public function setMail(string $mail): self
+    public function setLastname(string $lastname): self
     {
-        $this->mail = $mail;
+        $this->lastname = $lastname;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
 
         return $this;
     }
@@ -94,15 +126,44 @@ class User
         return $this;
     }
 
-    public function getRole(): ?string
+    public function getRole(): ?array
     {
         return $this->role;
     }
 
-    public function setRole(string $role): self
+    public function setRole(array $role): self
     {
         $this->role = $role;
 
         return $this;
     }
+
+    /**
+     * @return Collection|SocialNetwork[]
+     */
+    public function getSocialNetwork(): Collection
+    {
+        return $this->socialNetwork;
+    }
+
+    public function addSocialNetwork(SocialNetwork $socialNetwork): self
+    {
+        if (!$this->socialNetwork->contains($socialNetwork)) {
+            $this->socialNetwork[] = $socialNetwork;
+            $socialNetwork->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSocialNetwork(SocialNetwork $socialNetwork): self
+    {
+        if ($this->socialNetwork->contains($socialNetwork)) {
+            $this->socialNetwork->removeElement($socialNetwork);
+            $socialNetwork->removeUser($this);
+        }
+
+        return $this;
+    }
+
 }

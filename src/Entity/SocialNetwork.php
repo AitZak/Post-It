@@ -2,34 +2,70 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\SocialNetworkRepository")
+ * SocialNetwork
+ *
+ * @ORM\Table(name="social_network")
+ * @ORM\Entity
  */
 class SocialNetwork
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255, nullable=false)
      */
     private $name;
 
     /**
-     * @ORM\Column(type="integer")
+     * @var string
+     *
+     * @ORM\Column(name="client_id", type="string", length=255, nullable=false)
      */
-    private $client_id;
+    private $clientId;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @var string
+     *
+     * @ORM\Column(name="client_secret", type="string", length=255, nullable=false)
      */
-    private $client_secret;
+    private $clientSecret;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="User", inversedBy="socialNetwork")
+     * @ORM\JoinTable(name="authorization",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="social_network_id", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     *   }
+     * )
+     */
+    private $user;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->user = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -48,27 +84,54 @@ class SocialNetwork
         return $this;
     }
 
-    public function getClientId(): ?int
+    public function getClientId(): ?string
     {
-        return $this->client_id;
+        return $this->clientId;
     }
 
-    public function setClientId(int $client_id): self
+    public function setClientId(string $clientId): self
     {
-        $this->client_id = $client_id;
+        $this->clientId = $clientId;
 
         return $this;
     }
 
     public function getClientSecret(): ?string
     {
-        return $this->client_secret;
+        return $this->clientSecret;
     }
 
-    public function setClientSecret(string $client_secret): self
+    public function setClientSecret(string $clientSecret): self
     {
-        $this->client_secret = $client_secret;
+        $this->clientSecret = $clientSecret;
 
         return $this;
     }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUser(): Collection
+    {
+        return $this->user;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->user->contains($user)) {
+            $this->user[] = $user;
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->user->contains($user)) {
+            $this->user->removeElement($user);
+        }
+
+        return $this;
+    }
+
 }

@@ -5,28 +5,50 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * Comment
+ *
+ * @ORM\Table(name="comment", indexes={@ORM\Index(name="fk_id_content", columns={"content_id"}), @ORM\Index(name="fk_id_user", columns={"user_id"})})
  * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
  */
 class Comment
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @var int
+     *
+     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="text")
+     * @var string
+     *
+     * @ORM\Column(name="message", type="text", length=0, nullable=false)
      */
     private $message;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @var \User
+     *
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * })
      */
-    private $date;
+    private $user;
 
-    public function getId(): ?int
+    /**
+     * @var \Content
+     *
+     * @ORM\ManyToOne(targetEntity="Content")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="content_id", referencedColumnName="id")
+     * })
+     */
+    private $content;
+
+    public function getId(): ?string
     {
         return $this->id;
     }
@@ -43,15 +65,29 @@ class Comment
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getUser(): ?User
     {
-        return $this->date;
+        return $this->user;
     }
 
-    public function setDate(\DateTimeInterface $date): self
+    public function setUser(?User $user): self
     {
-        $this->date = $date;
+        $this->user = $user;
 
         return $this;
     }
+
+    public function getContent(): ?Content
+    {
+        return $this->content;
+    }
+
+    public function setContent(?Content $content): self
+    {
+        $this->content = $content;
+
+        return $this;
+    }
+
+
 }

@@ -5,53 +5,95 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ContentRepository")
+ * Content
+ *
+ * @ORM\Table(name="content", indexes={@ORM\Index(name="fk_user_approve_id", columns={"user_appove_id"}), @ORM\Index(name="fk_user_submit_id", columns={"user_submit_id"}), @ORM\Index(name="fk_user_publish_id", columns={"user_publish_id"})})
+ * @ORM\Entity
  */
 class Content
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @var int
+     *
+     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @var string
+     *
+     * @ORM\Column(name="title", type="string", length=255, nullable=false)
      */
     private $title;
 
     /**
-     * @ORM\Column(type="text")
+     * @var string
+     *
+     * @ORM\Column(name="description", type="text", length=0, nullable=false)
      */
     private $description;
 
     /**
-     * @ORM\Column(type="blob")
+     * @var string
+     *
+     * @ORM\Column(name="file", type="blob", length=0, nullable=false)
      */
     private $file;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @var \DateTime
+     *
+     * @ORM\Column(name="submit_date", type="datetime", nullable=false)
      */
-    private $submission_date;
+    private $submitDate;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @var \DateTime
+     *
+     * @ORM\Column(name="approval_date", type="datetime", nullable=false)
      */
-    private $approbation_date;
+    private $approvalDate;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @var \DateTime
+     *
+     * @ORM\Column(name="publication_date", type="datetime", nullable=false)
      */
-    private $publication_date;
+    private $publicationDate;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @var \User
+     *
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="user_submit_id", referencedColumnName="id")
+     * })
      */
-    private $status;
+    private $userSubmit;
 
-    public function getId(): ?int
+    /**
+     * @var \User
+     *
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="user_appove_id", referencedColumnName="id")
+     * })
+     */
+    private $userAppove;
+
+    /**
+     * @var \User
+     *
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="user_publish_id", referencedColumnName="id")
+     * })
+     */
+    private $userPublish;
+
+    public function getId(): ?string
     {
         return $this->id;
     }
@@ -92,51 +134,77 @@ class Content
         return $this;
     }
 
-    public function getSubmissionDate(): ?\DateTimeInterface
+    public function getSubmitDate(): ?\DateTimeInterface
     {
-        return $this->submission_date;
+        return $this->submitDate;
     }
 
-    public function setSubmissionDate(\DateTimeInterface $submission_date): self
+    public function setSubmitDate(\DateTimeInterface $submitDate): self
     {
-        $this->submission_date = $submission_date;
+        $this->submitDate = $submitDate;
 
         return $this;
     }
 
-    public function getApprobationDate(): ?string
+    public function getApprovalDate(): ?\DateTimeInterface
     {
-        return $this->approbation_date;
+        return $this->approvalDate;
     }
 
-    public function setApprobationDate(string $approbation_date): self
+    public function setApprovalDate(\DateTimeInterface $approvalDate): self
     {
-        $this->approbation_date = $approbation_date;
+        $this->approvalDate = $approvalDate;
 
         return $this;
     }
 
     public function getPublicationDate(): ?\DateTimeInterface
     {
-        return $this->publication_date;
+        return $this->publicationDate;
     }
 
-    public function setPublicationDate(\DateTimeInterface $publication_date): self
+    public function setPublicationDate(\DateTimeInterface $publicationDate): self
     {
-        $this->publication_date = $publication_date;
+        $this->publicationDate = $publicationDate;
 
         return $this;
     }
 
-    public function getStatus(): ?bool
+    public function getUserSubmit(): ?User
     {
-        return $this->status;
+        return $this->userSubmit;
     }
 
-    public function setStatus(bool $status): self
+    public function setUserSubmit(?User $userSubmit): self
     {
-        $this->status = $status;
+        $this->userSubmit = $userSubmit;
 
         return $this;
     }
+
+    public function getUserAppove(): ?User
+    {
+        return $this->userAppove;
+    }
+
+    public function setUserAppove(?User $userAppove): self
+    {
+        $this->userAppove = $userAppove;
+
+        return $this;
+    }
+
+    public function getUserPublish(): ?User
+    {
+        return $this->userPublish;
+    }
+
+    public function setUserPublish(?User $userPublish): self
+    {
+        $this->userPublish = $userPublish;
+
+        return $this;
+    }
+
+
 }
