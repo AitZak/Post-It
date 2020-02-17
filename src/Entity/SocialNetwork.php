@@ -45,7 +45,7 @@ class SocialNetwork
     private $clientSecret;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
+     * @var Collection
      *
      * @ORM\ManyToMany(targetEntity="User", inversedBy="socialNetwork")
      * @ORM\JoinTable(name="authorization",
@@ -64,7 +64,7 @@ class SocialNetwork
      */
     public function __construct()
     {
-        $this->user = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->user = new ArrayCollection();
     }
 
     public function getId(): ?int

@@ -59,7 +59,7 @@ class User
     private $role;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
+     * @var Collection
      *
      * @ORM\ManyToMany(targetEntity="SocialNetwork", mappedBy="user")
      */
@@ -70,10 +70,10 @@ class User
      */
     public function __construct()
     {
-        $this->socialNetwork = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->socialNetwork = new ArrayCollection();
     }
 
-    public function getId(): ?string
+    public function getId(): ?int
     {
         return $this->id;
     }
