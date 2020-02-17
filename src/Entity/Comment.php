@@ -48,7 +48,7 @@ class Comment
      */
     private $content;
 
-    public function getId(): ?string
+    public function getId(): ?int
     {
         return $this->id;
     }
