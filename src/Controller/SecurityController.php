@@ -33,10 +33,8 @@ class SecurityController extends AbstractController
      */
     public function forgottenPassword(): Response
     {
-
         return $this->render('Security/forgotten_password.html.twig');
     }
-
 
     /**
      * @Route("/mail_password", name="mail_forgotten_password")
@@ -48,7 +46,6 @@ class SecurityController extends AbstractController
         TokenGeneratorInterface $tokenGenerator
     ): Response
     {
-
         if ($request->isMethod('POST')) {
 
             $email = $request->request->get('email');
@@ -63,7 +60,7 @@ class SecurityController extends AbstractController
             }
             $token = $tokenGenerator->generateToken();
 
-            try{
+            try {
                 $user->setResetToken($token);
                 $entityManager->flush();
             } catch (\Exception $e) {
@@ -91,13 +88,11 @@ class SecurityController extends AbstractController
         return $this->render('Security/forgotten_password.html.twig');
     }
 
-
     /**
      * @Route("/reset_password/{token}", name="app_reset_password")
      */
     public function resetPassword(Request $request, string $token, UserPasswordEncoderInterface $passwordEncoder)
     {
-
         if ($request->isMethod('POST')) {
             $entityManager = $this->getDoctrine()->getManager();
 
@@ -116,11 +111,8 @@ class SecurityController extends AbstractController
             $this->addFlash('notice', 'Mot de passe mis à jour');
 
             return $this->redirectToRoute('login');
-        }else {
-
+        } else {
             return $this->render('Security/reset_password.html.twig', ['token' => $token]);
         }
-
     }
-
 }
