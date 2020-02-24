@@ -1,0 +1,31 @@
+{% block body %}
+    <div class="row">
+        <div class="my-5 mx-auto p-4 bg-light border rounded" style="background-color: #eee;" id="formlogin">
+            <h1 class="h3 mb-4 font-weight-normal">Authentification</h1>
+            {{ form_start(form) }}
+            <div class="input-group form-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                </div>
+                {{ form_widget(form.email, { 'attr': { 'class': 'form-control' } }) }}
+            </div>
+            <div class="input-group form-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-key"></i></span>
+                </div>
+                {{ form_widget(form.password, { 'attr': { 'class': 'form-control' } }) }}
+            </div>
+            {% if message is defined %}
+                {{ message }}
+            {% endif %}
+            <div class="row align-items-center remember">
+                <input type="checkbox">Remember Me
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success">
+                    <span class="btn-label"><i class="fas fa-sign-in-alt"></i></span>Se connecter</button>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
