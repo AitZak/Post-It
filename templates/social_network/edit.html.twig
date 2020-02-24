@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit SocialNetwork{% endblock %}
+
+{% block body %}
+    <h1>Edit SocialNetwork</h1>
+
+    {{ form_start(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.clientId,  {'attr': {'readonly': ''}}) }}
+    {{ form_row(form.clientSecret) }}
+    <button class="btn">{{ button_label|default('Update') }}</button>
+    {{ form_end(form) }}
+    <a href="{{ path('social_network_index') }}">back to list</a>
+
+    {{ include('social_network/_delete_form.html.twig') }}
+{% endblock %}
