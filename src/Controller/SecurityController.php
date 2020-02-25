@@ -58,8 +58,8 @@ class SecurityController extends AbstractController
             /* @var $user User */
 
             if ($user === null) {
-                $this->addFlash('danger', 'Email Inconnu');
-                return $this->redirectToRoute('homepage');
+                $this->addFlash('warning', 'Email Inconnu');
+                return $this->redirectToRoute('mail_forgotten_password');
             }
             $token = $tokenGenerator->generateToken();
 
@@ -68,7 +68,7 @@ class SecurityController extends AbstractController
                 $entityManager->flush();
             } catch (\Exception $e) {
                 $this->addFlash('warning', $e->getMessage());
-                return $this->redirectToRoute('homepage');
+                return $this->redirectToRoute('login');
             }
 
             $url = $this->generateUrl('app_reset_password', array('token' => $token), UrlGeneratorInterface::ABSOLUTE_URL);
@@ -88,7 +88,7 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('login');
         }
 
-        return $this->render('security/forgotten_password.html.twig');
+        return $this->render('Security/forgotten_password.html.twig');
     }
 
 
@@ -106,7 +106,7 @@ class SecurityController extends AbstractController
 
             if ($user === null) {
                 $this->addFlash('danger', 'Token Inconnu');
-                return $this->redirectToRoute('homepage');
+                return $this->redirectToRoute('login');
             }
 
             $user->setResetToken('');
@@ -115,7 +115,7 @@ class SecurityController extends AbstractController
 
             $this->addFlash('notice', 'Mot de passe mis à jour');
 
-            return $this->redirectToRoute('homepage');
+            return $this->redirectToRoute('login');
         }else {
 
             return $this->render('Security/reset_password.html.twig', ['token' => $token]);

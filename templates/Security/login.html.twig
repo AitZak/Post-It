@@ -19,7 +19,7 @@
                 {{ message }}
             {% endif %}
             <div class="row align-items-center remember">
-                <input type="checkbox">Remember Me
+                <input type="checkbox">se souvenir de moi
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-success">
@@ -27,7 +27,13 @@
             </div>
             {{ form_end(form) }}
 
-            <a  href="{{ path('app_forgotten_password') }}">Forgotten password</a>
+            <a  href="{{ path('app_forgotten_password') }}">mot de passe oublié</a>
+
+            {% for message in app.flashes('notice') %}
+                <div class="flash-notice">
+                    {{ message }}
+                </div>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}
