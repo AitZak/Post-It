@@ -38,7 +38,7 @@ class Content
     /**
      * @var string
      *
-     * @ORM\Column(name="file", type="blob", length=0, nullable=false)
+     * @ORM\Column(name="file", type="string", length=255, nullable=true)
      */
     private $file;
 
@@ -52,14 +52,14 @@ class Content
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="approval_date", type="datetime", nullable=false)
+     * @ORM\Column(name="approval_date", type="datetime", nullable=true)
      */
     private $approvalDate;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="publication_date", type="datetime", nullable=false)
+     * @ORM\Column(name="publication_date", type="datetime", nullable=true)
      */
     private $publicationDate;
 
@@ -81,7 +81,7 @@ class Content
      *   @ORM\JoinColumn(name="user_appove_id", referencedColumnName="id")
      * })
      */
-    private $userAppove;
+    private $userApprove;
 
     /**
      * @var \User
@@ -92,6 +92,19 @@ class Content
      * })
      */
     private $userPublish;
+
+    /**
+     * @ORM\Column(type="smallint")
+     */
+    private $statut;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->statut = 0;
+    }
 
     public function getId(): ?int
     {
@@ -184,12 +197,12 @@ class Content
 
     public function getUserAppove(): ?User
     {
-        return $this->userAppove;
+        return $this->userApprove;
     }
 
-    public function setUserAppove(?User $userAppove): self
+    public function setUserAppove(?User $userApprove): self
     {
-        $this->userAppove = $userAppove;
+        $this->userApprove = $userApprove;
 
         return $this;
     }
@@ -202,6 +215,18 @@ class Content
     public function setUserPublish(?User $userPublish): self
     {
         $this->userPublish = $userPublish;
+
+        return $this;
+    }
+
+    public function getStatut(): ?int
+    {
+        return $this->statut;
+    }
+
+    public function setStatut(int $statut): self
+    {
+        $this->statut = $statut;
 
         return $this;
     }
