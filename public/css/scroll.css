@@ -15,9 +15,9 @@
     height: 65px;
 }
 #more-arrows:hover polygon {
-    fill: #fff;
-    -webkit-transition: all 0.2s ease-out;
-    transition: all 0.2s ease-out;
+    fill: #FFF;
+    -webkit-transition: all .2s ease-out;
+    transition: all .2s ease-out;
 }
 #more-arrows:hover polygon.arrow-bottom {
     -webkit-transform: translateY(-18px);
@@ -29,9 +29,9 @@
 }
 
 polygon {
-    fill: #fff;
-    -webkit-transition: all 0.2s ease-out;
-    transition: all 0.2s ease-out;
+    fill: #FFF;
+    -webkit-transition: all .2s ease-out;
+    transition: all .2s ease-out;
 }
 polygon.arrow-middle {
     opacity: 0.75;
