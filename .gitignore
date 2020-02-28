@@ -1,6 +1,7 @@
 
 ###> symfony/framework-bundle ###
 .env
+.idea/
 symfony.lock
 /.env.local
 /.env.local.php
@@ -9,4 +10,6 @@ symfony.lock
 /public/bundles/
 /var/
 /vendor/
+docker/
+public/uploads/files/
 ###< symfony/framework-bundle ###

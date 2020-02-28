@@ -15,7 +15,7 @@ class Modification
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_modification", type="datetime", nullable=false)
+     * @ORM\Column(name="date_modification", type="string", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
@@ -52,9 +52,16 @@ class Modification
      */
     private $user;
 
-    public function getDateModification(): ?\DateTimeInterface
+    public function getDateModification(): ?string
     {
         return $this->dateModification;
+    }
+
+    public function setDateModification($dateModification): self
+    {
+        $this->dateModification = $dateModification;
+
+        return $this;
     }
 
     public function getDescription(): ?string
