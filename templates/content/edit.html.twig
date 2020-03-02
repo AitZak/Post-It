@@ -4,13 +4,9 @@
 
 {% block body %}
     <h1>Edit Content</h1>
-
     {{ include('content/_form.html.twig', {'button_label': 'Update'}) }}
-
     <button type="submit" class="btn btn-outline-success">
         <a href="{{ path('content_index') }}"> <span class="btn-label"><i class="fas fa-sign-in-alt"></i></span>
             back to list</a></button>
-
-
     {{ include('content/_delete_form.html.twig') }}
 {% endblock %}
