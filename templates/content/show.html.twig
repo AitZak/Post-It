@@ -42,6 +42,33 @@
         </tbody>
     </table>
 
+    <h5>Add a comment</h5>
+
+    {{ include('comment/_form.html.twig') }}
+
+    <h5>Comments</h5>
+    <table>
+        <tbody>
+
+        {% if comments %}
+            {% for comment in comments %}
+                <tr>
+                    <th>Message</th>
+                    <td>{{ comment.message }}</td>
+                    <td></td>
+                    <td>
+                        <a href="{{ path('comment_edit', {'id': comment.id}) }}" style="color: dodgerblue">edit comm</a>
+                        <a href="{{ path('comment_delete', {'id': comment.id}) }}"  style="color: red">delete comm</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <p>No comments</p>
+        {% endif %}
+        </tbody>
+    </table>
+    <br><br>
+
     <a href="{{ path('content_index') }}">back to list</a>
 
     <a href="{{ path('content_edit', {'id': content.id}) }}">edit</a>
