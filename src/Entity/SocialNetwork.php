@@ -60,11 +60,6 @@ class SocialNetwork
     private $user;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Publication", mappedBy="socialNetwork", cascade={"persist", "remove"})
-     */
-    private $publication;
-
-    /**
      * Constructor
      */
     public function __construct()
@@ -134,23 +129,6 @@ class SocialNetwork
     {
         if ($this->user->contains($user)) {
             $this->user->removeElement($user);
-        }
-
-        return $this;
-    }
-
-    public function getPublication(): ?Publication
-    {
-        return $this->publication;
-    }
-
-    public function setPublication(Publication $publication): self
-    {
-        $this->publication = $publication;
-
-        // set the owning side of the relation if necessary
-        if ($publication->getSocialNetwork() !== $this) {
-            $publication->setSocialNetwork($this);
         }
 
         return $this;

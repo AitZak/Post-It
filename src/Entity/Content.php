@@ -94,14 +94,9 @@ class Content
     private $userPublish;
 
     /**
-     * @ORM\Column(type="smallint", options={"comment":"0:submitted, 1: accepted, 2: refused, 3:published"})
+     * @ORM\Column(type="smallint")
      */
     private $statut;
-
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Approval", mappedBy="content", cascade={"persist", "remove"})
-     */
-    private $approval;
 
     /**
      * Constructor
@@ -236,20 +231,5 @@ class Content
         return $this;
     }
 
-    public function getApproval(): ?Approval
-    {
-        return $this->approval;
-    }
 
-    public function setApproval(Approval $approval): self
-    {
-        $this->approval = $approval;
-
-        // set the owning side of the relation if necessary
-        if ($approval->getContent() !== $this) {
-            $approval->setContent($this);
-        }
-
-        return $this;
-    }
 }
