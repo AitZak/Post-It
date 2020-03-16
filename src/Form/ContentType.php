@@ -25,6 +25,7 @@ class ContentType extends AbstractType
                 'mapped' => false,
                 'required' => false,
             ])
+            ->add('type_file')
         ;
     }
 

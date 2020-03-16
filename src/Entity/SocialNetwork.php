@@ -45,6 +45,20 @@ class SocialNetwork
     private $clientSecret;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="token", type="string", length=255, nullable=true)
+     */
+    private $token;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="token_secret", type="string", length=255, nullable=true)
+     */
+    private $tokenSecret;
+
+    /**
      * @var Collection
      *
      * @ORM\ManyToMany(targetEntity="User", inversedBy="socialNetwork")
@@ -109,6 +123,30 @@ class SocialNetwork
     public function setClientSecret(string $clientSecret): self
     {
         $this->clientSecret = $clientSecret;
+
+        return $this;
+    }
+
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
+
+    public function setToken(string $token): self
+    {
+        $this->token = $token;
+
+        return $this;
+    }
+
+    public function getTokenSecret(): ?string
+    {
+        return $this->clientId;
+    }
+
+    public function setTokenSecret(string $tokenSecret): self
+    {
+        $this->tokenSecret = $tokenSecret;
 
         return $this;
     }
