@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Approval{% endblock %}
+
+{% block body %}
+    <h1>Reviews</h1>
+
+    <h4>Accepted Content</h4>
+    <table>
+        <tbody>
+        {% for review in acceptedReviews %}
+            <tr>
+                <td><a style="color: darkgreen;" href="{{ path('content_show', {'id': review.content.id}) }}">{{ review.content.title  }}</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <h4>Rejected Content</h4>
+    <table>
+        <tbody>
+        {% for review in rejectedReviews %}
+            <tr>
+                <td><a  style="color: red;"  href="{{ path('content_show', {'id': review.content.id}) }}">{{ review.content.title  }}</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

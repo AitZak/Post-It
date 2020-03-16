@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Content;
 use App\Entity\Modification;
+use App\Form\CommentType;
 use App\Form\ContentType;
+use App\Manager\ApprovalManager;
 use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -68,12 +71,36 @@ class ContentController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="content_show", methods={"GET"})
+     * @Route("/{id}", name="content_show", methods={"GET","POST"})
      */
-    public function show(Content $content): Response
+    public function show(Content $content, Request $request,EntityManagerInterface $entityManager): Response
     {
+        $comments = $this->getDoctrine()
+            ->getRepository(Comment::class)
+            ->findBy(
+                [
+                    'content' => $content,
+                ]
+            );
+
+        $comment = new Comment();
+        $commentForm = $this->createForm(CommentType::class, $comment);
+        $commentForm->handleRequest($request);
+
+        if ($commentForm->isSubmitted() && $commentForm->isValid()) {
+            $comment->setContent($content);
+            $comment->setUser($this->getUser());
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($comment);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('content_show', ['id'=>$content->getId()]);
+        }
+
         return $this->render('content/show.html.twig', [
+            'comment_form' => $commentForm->createView(),
             'content' => $content,
+            'comments' => $comments,
         ]);
     }
 
