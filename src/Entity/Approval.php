@@ -23,13 +23,13 @@ class Approval
     private $user;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Content", inversedBy="approval", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Content", inversedBy="approval", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $content;
 
     /**
-     * @ORM\Column(type="smallint", options={"comment":"0:submitted, 1: accepted, 2: refused, 3:published"})
+     * @ORM\Column(type="smallint", options={"comment":"1: accepted, 2: refused"})
      */
     private $status;
 
