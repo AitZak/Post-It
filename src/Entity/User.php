@@ -73,6 +73,16 @@ class User implements UserInterface
     private $socialNetwork;
 
     /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Approval", mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $approval;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Publication", mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $publication;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -207,6 +217,40 @@ class User implements UserInterface
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
+    }
+
+    public function getApproval(): ?Approval
+    {
+        return $this->approval;
+    }
+
+    public function setApproval(Approval $approval): self
+    {
+        $this->approval = $approval;
+
+        // set the owning side of the relation if necessary
+        if ($approval->getUser() !== $this) {
+            $approval->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function getPublication(): ?Publication
+    {
+        return $this->publication;
+    }
+
+    public function setPublication(Publication $publication): self
+    {
+        $this->publication = $publication;
+
+        // set the owning side of the relation if necessary
+        if ($publication->getUser() !== $this) {
+            $publication->setUser($this);
+        }
+
+        return $this;
     }
 
 
