@@ -78,6 +78,10 @@ class ContentController extends AbstractController
      */
     public function show(Content $content, Request $request, EntityManagerInterface $entityManager, ApprovalManager $approvalManager): Response
     {
+        if ($content->getUserSubmit() !== $this->getUser() && $this->getUser()->getRoles() !== ['ROLE_ADMIN'] && $this->getUser()->getRoles() !== ['ROLE_COMM'] && $this->getUser()->getRoles() !== ['ROLE_REVIEWER']) {
+            return new Response('You are not allowed to be here');
+        }
+
         $approvals = $approvalManager->getAllApprovalsByContent($content);
 
         $user = $this->getUser();
