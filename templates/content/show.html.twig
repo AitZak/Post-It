@@ -85,8 +85,8 @@
           <br>
 
     <h3>Review</h3>
-    <button class="btn btn-success" value="1">Approved</button>
-    <button class="btn btn-danger" value="2">Rejected</button>
+    <button class="btn btn-success review" value="1">Approved</button>
+    <button class="btn btn-danger review" value="2">Rejected</button>
 
     {{ include('content/_delete_form.html.twig') }}
 
@@ -101,7 +101,7 @@
     </script>
     <script>
         $(function(){
-            $("button").click(function() {
+            $(".review").click(function() {
                 var contentStatus = $(this).val();
                 $.ajax({
                     url: '{{ path('approval_new') }}',
