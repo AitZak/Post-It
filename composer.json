@@ -26,6 +26,8 @@
         "tumblr/tumblr": "^0.4.0"
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^3.3",
+        "fzaninotto/faker": "^1.9",
         "hautelook/alice-bundle": "^2.5",
         "symfony/maker-bundle": "^1.12",
         "symfony/profiler-pack": "^1.0"

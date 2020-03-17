@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Approval index{% endblock %}
+
+{% block body %}
+    <h1>Approval index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Status</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for approval in approvals %}
+            <tr>
+                <td>{{ approval.id }}</td>
+                <td>{{ approval.status }}</td>
+                <td>
+                    <a href="{{ path('approval_show', {'id': approval.id}) }}">show</a>
+                    <a href="{{ path('approval_edit', {'id': approval.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('approval_new') }}">Create new</a>
+{% endblock %}

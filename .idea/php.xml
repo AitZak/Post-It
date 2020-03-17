@@ -102,6 +102,7 @@
       <path value="$PROJECT_DIR$/vendor/guzzlehttp/oauth-subscriber" />
       <path value="$PROJECT_DIR$/vendor/tumblr/tumblr" />
       <path value="$PROJECT_DIR$/vendor/eher/oauth" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/doctrine-fixtures-bundle" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.1" />
