@@ -26,6 +26,9 @@ class ContentController extends AbstractController
      */
     public function index(): Response
     {
+        if ($this->getUser()->getRoles() !== ['ROLE_ADMIN'] && $this->getUser()->getRoles() !== ['ROLE_COMM']) {
+            return new Response('You are not allowed to be here');
+        }
         $contents = $this->getDoctrine()
             ->getRepository(Content::class)
             ->findAll();
@@ -117,6 +120,9 @@ class ContentController extends AbstractController
      */
     public function edit(Request $request, EntityManagerInterface $em, Content $content, FileUploader $fileUploader): Response
     {
+        if ($content->getUserSubmit() !== $this->getUser() && $this->getUser()->getRoles() !== ['ROLE_ADMIN'] && $this->getUser()->getRoles() !== ['ROLE_COMM'] && $this->getUser()->getRoles() !== ['ROLE_REVIEWER']) {
+            return new Response('You are not allowed to be here');
+        }
         $form = $this->createForm(ContentType::class, $content);
         $form->handleRequest($request);
 
