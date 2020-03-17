@@ -29,7 +29,11 @@
 
                 <td>{{ content.title }}</td>
                 <td>{{ content.description|raw }}</td>
-                <td><a target="_blank" href="{{ asset('uploads/files/' ~ content.file) }}"> <i class="fas fa-file"></i> </a></td>
+                {% if 'https://' in content.file %}
+                    <td><a target="_blank" href="{{ content.file }}"> <i class="fas fa-file"></i> </a></td>
+                {% else %}
+                    <td><a target="_blank" {% if content.file is not empty %} href="{{ asset('uploads/files/' ~ content.file) }}" {% endif %}> <i {% if content.file is empty %} style="opacity: 25%; touch-action: none;" {% endif %}class="fas fa-file"></i> </a></td>
+                {% endif %}
                 <td>{{ content.submitDate ? content.submitDate|date('Y-m-d H:i') : '' }}</td>
                 <td>
                     {% if content.userSubmit %}
