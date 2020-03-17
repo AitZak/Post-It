@@ -2,9 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Content;
+use App\Entity\Publication;
 use App\Entity\User;
 use App\Form\RegisterUserType;
 use App\Form\UserType;
+use App\Manager\ApprovalManager;
+use App\Manager\ContentManager;
+use App\Repository\PublicationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -100,5 +105,41 @@ class UserController extends AbstractController
         }
 
         return $this->redirectToRoute('user_index');
+    }
+
+    /**
+     * @Route("/{id}/submissions", name="user_submissions", methods={"GET"})
+     */
+    public function mySubmissions(User $user, ContentManager $contentManager): Response
+    {
+        $submissions = $contentManager->getSubmissionsByUser($user);
+        return $this->render('user/submissions.html.twig', [
+            'user' => $user,
+            'submissions' => $submissions,
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/reviews", name="user_reviews", methods={"GET"})
+     */
+    public function myReviews(User $user, ApprovalManager $approvalManager): Response
+    {
+        $reviews = $approvalManager->getApprovalsByUser($user);
+        return $this->render('user/reviews.html.twig', [
+            'user' => $user,
+            'reviews' => $reviews,
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/publications", name="user_publications", methods={"GET"})
+     */
+    public function myPublications(User $user, ContentManager $contentManager): Response
+    {
+        $publications = $contentManager->getPublicatedSubmissionsByUser($user);
+        return $this->render('user/publications.html.twig', [
+            'user' => $user,
+            'publicationsInfos' => $publications,
+        ]);
     }
 }
