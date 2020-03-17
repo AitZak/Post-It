@@ -24,6 +24,10 @@
                 <td>{{ content.file }}</td>
             </tr>
             <tr>
+                <th>Statut</th>
+                <td>{{ content.statut }}</td>
+            </tr>
+            <tr>
                 <th>SubmitUser</th>
                 <td>{{ content.userSubmit.firstname ? content.userSubmit.firstname : '' }}</td>
             </tr>
@@ -74,8 +78,12 @@
     <a href="{{ path('content_edit', {'id': content.id}) }}">edit</a>
 
     <h3>Review</h3>
-    <button class="btn btn-success" value="1">Approved</button>
-    <button class="btn btn-danger" value="2">Rejected</button>
+    <button class="btn btn-success review" value="1">Approved</button>
+    <button class="btn btn-danger review" value="2">Rejected</button>
+
+    {% if content.statut == 1 %}
+        <button class="btn btn-success" id="publish" name="publish">Publier</button>
+    {% endif %}
 
     {{ include('content/_delete_form.html.twig') }}
 {% endblock %}
@@ -86,7 +94,26 @@
     </script>
     <script>
         $(function(){
-            $("button").click(function() {
+            $("#publish").click(function() {
+                $.ajax({
+                    url: '{{ path('publish') }}',
+                    type: 'GET',
+                    data: {contentId: {{content.id}}},
+
+                    success: function(data) {
+                        alert("contenu publié");
+                        location.reload(true);
+                    },
+                    error : function(xhr, textStatus, errorThrown) {
+                        alert(errorThrown);
+                    }
+                });
+            });
+        });
+
+
+        $(function(){
+            $(".review").click(function() {
                 var contentStatus = $(this).val();
                 $.ajax({
                     url: '{{ path('approval_new') }}',

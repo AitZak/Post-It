@@ -8,14 +8,10 @@ use App\Manager\ApprovalManager;
 use App\Manager\ContentManager;
 use App\Repository\ApprovalRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use GuzzleHttp\Client;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Subscriber\Oauth\Oauth1;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Api\TumblrApi;
 
 /**
  * @Route("/approval")
@@ -120,65 +116,5 @@ class ApprovalController extends AbstractController
         }
 
         return $this->redirectToRoute('approval_index');
-    }
-
-    /**
-     * @Route("/publish_approval", name="publish_approval")
-     */
-    public function ghjbi(Request $request, ApprovalRepository $approvalRepository, TumblrApi $tumblrApi)
-    {
-//        $approval = $approvalRepository ->findOneBy(["id" => $request->get("approvalId")]);
-//        $content = $approval -> getContent();
-//        $user = $this->getUser();
-//        $socialsNetworks = $user -> getSocialNetwork();
-//
-//        $contentValues['title'] = $content -> getFile();
-//        if($content ->getFile()){
-//            $contentValues['file'] = $content -> getFile();
-//            $contentValues['type'] = $content -> getTypeFile();
-//        }
-//        if($content -> getDescription()){
-//            $contentValues['description'] = $content -> getDescription();
-//        }
-//
-//        var_dump($contentValues);
-//        foreach($socialsNetworks as $socialsNetwork){
-//            if($socialsNetwork -> getName() == 'tumblr'){
-//                $consumer_key = $socialsNetwork -> getClientId();
-//                $consumer_secret = $socialsNetwork -> getClientSecret();
-//                $token = $socialsNetwork -> getToken();
-//                $token_secret = $socialsNetwork -> getTokenSecret();
-//
-//                $data = $tumblrApi->createData($contentValues);
-//                $this -> post($data, $consumer_key, $consumer_secret, $token, $token_secret);
-//            }
-//
-//
-//        }
-
-        return $this->redirectToRoute('content');
-    }
-
-    public function post($data, $consumer_key, $consumer_secret, $token, $token_secret){
-        $stack = HandlerStack::create();
-        $middleware = new Oauth1([
-            'consumer_key' => $consumer_key,
-            'consumer_secret' => $consumer_secret,
-            'token' => $token,
-            'token_secret' => $token_secret]);
-        $stack->push($middleware);
-
-        $client = new Client([
-            'base_uri' => 'https://api.tumblr.com/v2/',
-            'handler' => $stack,
-            'auth' => 'oauth',
-            'headers' => [ 'Content-Type' => 'application/json' ]
-        ]);
-
-
-        $res = $client->post('blog/androgynouskingtale/post',['body' => json_encode($data)]);
-        $end = json_decode($res->getBody(), true);
-//        return $this->render('test.html.twig', [
-//            'test' => $end,]);
     }
 }

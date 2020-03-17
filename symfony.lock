@@ -81,6 +81,9 @@
     "egulias/email-validator": {
         "version": "2.1.17"
     },
+    "eher/oauth": {
+        "version": "1.0.7"
+    },
     "fzaninotto/faker": {
         "version": "v1.9.1"
     },
@@ -475,6 +478,9 @@
             "version": "1.0",
             "ref": "fe5a50faf580eb58f08ada2abe8afbd2d4941e05"
         }
+    },
+    "tumblr/tumblr": {
+        "version": "v0.4.0"
     },
     "twig/twig": {
         "version": "v2.12.3"

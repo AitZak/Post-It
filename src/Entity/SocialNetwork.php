@@ -141,7 +141,7 @@ class SocialNetwork
 
     public function getTokenSecret(): ?string
     {
-        return $this->clientId;
+        return $this->tokenSecret;
     }
 
     public function setTokenSecret(string $tokenSecret): self

@@ -39,7 +39,11 @@
                 <td>
                     <a href="{{ path('content_show', {'id': content.id}) }}">show</a>
                     <a href="{{ path('content_edit', {'id': content.id}) }}">edit</a>
+                    {% if content.statut == 1 %}
+                        <a href="{{ path('publish', {'contentId': content.id}) }}">publier</a>
+                    {% endif %}
                 </td>
+
             </tr>
         {% else %}
             <tr>
