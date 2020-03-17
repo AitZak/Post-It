@@ -1,0 +1,28 @@
+{% if comments %}
+    {% for comment in comments %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-10">
+            <div class="card card-white post">
+                <div class="post-description">
+                    <div class="post-title">
+                        <a href="#"><b>{{ comment.user.firstname }}@lyz</b></a>
+
+                    </div>
+        <p>{{ comment.message }}</p>
+
+        <a href="{{ path('comment_edit', {'id': comment.id}) }}" ><i class="fas fa-edit"></i></a>
+        <a href="{{ path('comment_delete', {'id': comment.id}) }}" ><i class="fas fa-trash"></i></a>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+        <hr>
+    {% endfor %}
+{% else %}
+    <p>No comments</p>
+{% endif %}
+

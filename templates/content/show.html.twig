@@ -3,6 +3,56 @@
 {% block title %}Content{% endblock %}
 
 {% block body %}
+<div class="container" id="down">
+    <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+            <h1 class="post-title">{{ content.title }}  </h1>
+            <h1 class="post-title" style="display: inline-block">
+                <button class="btn btn-success"  value="1"><span class="btn-label"><i class="fas fa-check"></i></span> Approuvé</button>
+                <button class="btn btn-danger" value="2"> <span class="btn-label"><i class="fas fa-ban"></i></span> Rejeté</button>
+                <button type="submit" class="btn btn-outline-primary">
+                    <a href="{{ path('content_edit', {'id': content.id}) }}"><span class="btn-label"><i class="fas fa-edit"></i></span>
+                        edit</a></button>
+            </h1>
+               {{ include('content/_delete_form.html.twig') }}
+
+    <table class="table table-bordered"  >
+        <thead class="thead-dark">
+        <tbody>
+            <tr>
+                 <th scope="col">Id</th>
+                <td>{{ content.id }}</td>
+            </tr>
+            <tr>
+                 <th scope="col">Title</th>
+                <td>{{ content.title }}</td>
+            </tr>
+            <tr>
+                 <th scope="col">Description</th>
+                <td>{{ content.description }}</td>
+            </tr>
+            <tr>
+                 <th scope="col">File</th>
+                <td>{{ content.file }}</td>
+            </tr>
+            <tr>
+                 <th scope="col">SubmitUser</th>
+                <td>{{ content.userSubmit.firstname ? content.userSubmit.firstname : '' }}</td>
+            </tr>
+            <tr>
+                 <th scope="col">SubmitDate</th>
+                <td>{{ content.submitDate ? content.submitDate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                 <th scope="col">ApprovalDate</th>
+                <td>{{ content.approvalDate ? content.approvalDate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                 <th scope="col">PublicationDate</th>
+                <td>{{ content.publicationDate ? content.publicationDate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
     <div class="container" id="down">
         <div class="row">
             <div class="col-lg-8 col-md-10 mx-auto">
@@ -57,12 +107,17 @@
                         
                 <br>
                 <h5>Add a comment</h5>
+            <button type="submit" class="btn btn-outline-primary">
+                <a href="{{ path('content_index') }}"> <span class="btn-label"><i class="fas fa-arrow-left"></i></span>
+                    back to list</a></button>
+            <hr>
+    <h5 class="post-title">Laissez un commentaire</h5>
 
                 {{ include('comment/_form.html.twig') }}
 
-                <h5>Comments</h5>
-                <table>
-                    <tbody>
+    <h5>Commentaires</h5>
+
+            {{ include('comment/comment.html.twig') }}
 
                     {% if comments %}
                         {% for comment in comments %}
@@ -163,6 +218,12 @@
                     }
                 });
             });
+        });
+
+        $(document).ready(function(){
+
+
+            $("[data-toggle=tooltip]").tooltip();
         });
     </script>
 {% endblock %}

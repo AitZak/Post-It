@@ -3,10 +3,19 @@
 {% block title %}Edit Content{% endblock %}
 
 {% block body %}
-    <h1>Edit Content</h1>
+<div class="container" id="down">
+    <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+    <h1>Modifier un Contenu</h1>
+
     {{ include('content/_form.html.twig', {'button_label': 'Update'}) }}
-    <button type="submit" class="btn btn-outline-success">
-        <a href="{{ path('content_index') }}"> <span class="btn-label"><i class="fas fa-sign-in-alt"></i></span>
+            <div class="col-lg-10 btn-group" >
+            <button type="submit" class="btn btn-outline-primary">
+        <a href="{{ path('content_index') }}"> <span class="btn-label"><i class="fas fa-arrow-left"></i></span>
             back to list</a></button>
     {{ include('content/_delete_form.html.twig') }}
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
