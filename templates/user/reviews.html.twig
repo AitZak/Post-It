@@ -1,19 +1,91 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <p>Vous avez fait {{ reviews.nbReviews }} review(s).</p>
-    <h3>Contenus acceptés</h3>
-    <ul>
-        {% for review in reviews.acceptedReviews %}
-            <li><a href="{{ path('content_show', {'id': review.content.id}) }}">{{ review.content.title }}</a></li>
-            <br>
-        {% endfor %}
-    </ul>
-    <h3>Contenus refusés</h3>
-    <ul>
-        {% for review in reviews.rejectedReviews %}
-            <li><a href="{{ path('content_show', {'id': review.content.id}) }}">{{ review.content.title }}</a></li>
-            <br>
-        {% endfor %}
-    </ul>
+<div id="page-top">
+    <div class="container" id="down" >
+    <div class="row">
+    <div class="col-lg-10 col-md-10 mx-auto">
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="card bg-secondary text-white shadow">
+                    <div class="card-body">
+                        Vous avez fait
+                        <div class="text-white-50 small">{{ reviews.nbReviews }} review(s).</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            <div class="row">
+                <div class="col-lg-10">
+                    <div class="card shadow mb-4">
+                        <!-- Card Header - Accordion -->
+                        <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
+                            <h6 class="m-0 font-weight-bold text-primary">Contenus acceptés</h6>
+                        </a>
+                        <!-- Card Content - Collapse -->
+                        <div class="collapse hide" id="collapseCardExample">
+                            <div class="card-body">
+                                {% for review in reviews.acceptedReviews %}
+                                    <li class="list-group-item"><a href="{{ path('content_show', {'id': review.content.id}) }}">{{ review.content.title }}</a></li>
+                                    <br>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        <div class="row">
+            <div class="col-lg-10">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Contenus refusés</h6>
+                </div>
+                <div class="card-body">
+                    {% for review in reviews.rejectedReviews %}
+                        <li class="list-group-item"><a href="{{ path('content_show', {'id': review.content.id}) }}">{{ review.content.title }}</a></li>
+                        <br>
+                    {% endfor %}
+                </div>
+            </div>
+            </div>
+        </div>
+
+
+
+
+    </div>
+    </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script language="javascript"
+        src="https://code.jquery.com/jquery-2.2.4.min.js">
+</script>
+<script>
+    $(document).ready(function() {
+        function scroll_to_top(div) {
+            $(div).click(function() {
+                $('html,body').animate({scrollTop: 0}, 'slow');
+            });
+            $(window).scroll(function(){
+                if($(window).scrollTop()<500){
+                    $(div).fadeOut();
+                } else{
+                    $(div).fadeIn();
+                }
+            });
+        }
+        scroll_to_top("#scroll_to_top");
+    });
+</script>
 {% endblock %}
