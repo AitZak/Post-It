@@ -15,6 +15,10 @@ class SocialNetworkType extends AbstractType
             ->add('name')
             ->add('clientId')
             ->add('clientSecret')
+            ->add('token')
+            ->add('tokenSecret')
+
+
         ;
     }
 

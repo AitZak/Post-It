@@ -2,19 +2,18 @@
 
 namespace App\Controller;
 
-use App\Entity\Content;
-use App\Entity\Publication;
 use App\Entity\User;
-use App\Form\RegisterUserType;
 use App\Form\UserType;
 use App\Manager\ApprovalManager;
 use App\Manager\ContentManager;
-use App\Repository\PublicationRepository;
+use App\Repository\SocialNetworkRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+
 
 /**
  * @Route("/user")
@@ -97,8 +96,14 @@ class UserController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="user_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param User $user
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param $socialNetworkRepository
+     * @return Response
      */
-    public function edit(Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function edit(Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder,
+                         SocialNetworkRepository $socialNetworkRepository): Response
     {
         if ($this->getUser() === null) {
             return $this->render('main/error_connection.html.twig');
@@ -119,9 +124,11 @@ class UserController extends AbstractController
             return $this->redirectToRoute('user_index');
         }
 
+        $socialNetworks = $socialNetworkRepository -> findAll();
         return $this->render('user/edit.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
+            'socialNetworks'=> $socialNetworks
         ]);
     }
 
@@ -201,5 +208,38 @@ class UserController extends AbstractController
             'user' => $user,
             'publicationsInfos' => $publications,
         ]);
+    }
+
+
+    /**
+     * @Route("/userSocialNetwork_add", name="userSocialNetwork_add", methods={"POST"})
+     */
+    public function userSocialNetwork_add(Request $request, UserRepository $userRepository,
+                                          SocialNetworkRepository $socialNetworkRepository): Response
+    {
+
+        $user = $userRepository -> findOneBy(["id" => $request -> get('idUser')]);
+        $socialNetwork = $socialNetworkRepository -> findOneBy(["id" => $request -> get('SN-select')]);
+        $socialNetwork -> addUser($user);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->flush();
+
+        return $this->redirectToRoute('user_edit', ['id' => $request -> get('idUser')] );
+    }
+
+    /**
+     * @Route("/userSocialNetwork_delete", name="userSocialNetwork_delete", methods={"POST"})
+     */
+    public function userSocialNetwork_delete(Request $request, UserRepository $userRepository,
+                                             SocialNetworkRepository $socialNetworkRepository): Response
+    {
+
+        $user = $userRepository -> findOneBy(["id" => $request -> get('idUser')]);
+        $socialNetwork = $socialNetworkRepository -> findOneBy(["id" => $request -> get('SN-select')]);
+        $socialNetwork -> removeUser($user);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->flush();
+
+        return $this->redirectToRoute('user_edit', ['id' => $request -> get('idUser')] );
     }
 }

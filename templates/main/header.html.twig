@@ -23,6 +23,7 @@
                  <li class="nav-item">
                     <a href="{{ path('home') }}">Home </a>
                 </li>
+
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                     <li class="nav-item">
                         <a href="{{ path('user_submissions', {'id': app.user.id}) }}">Mes Soumissions</a>

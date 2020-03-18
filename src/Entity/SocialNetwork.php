@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * SocialNetwork
  *
  * @ORM\Table(name="social_network")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\SocialNetworkRepository")
  */
 class SocialNetwork
 {

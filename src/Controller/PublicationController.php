@@ -36,11 +36,11 @@ class PublicationController extends AbstractController
 
         $user = $this->getUser();
         $socialsNetworks = $user -> getSocialNetwork();
-
+        $contentValues['type'] = $content -> getTypeFile();
         $contentValues['title'] = $content -> getTitle();
         if($content ->getFile()){
             $contentValues['file'] = $content -> getFile();
-            $contentValues['type'] = $content -> getTypeFile();
+
         }
         if($content -> getDescription()){
             $contentValues['description'] = $content -> getDescription();
