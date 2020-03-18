@@ -2,10 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Content;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Manager\ApprovalManager;
+use App\Manager\CommentManager;
 use App\Manager\ContentManager;
+use App\Manager\ModificationManager;
+use App\Manager\PublicationManager;
+use App\Manager\UserManager;
 use App\Repository\SocialNetworkRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -60,6 +65,16 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if (in_array('ROLE_ADMIN', $user->getRoles())){
+                $user->setRoles(['ROLE_ADMIN']);
+            }
+            if (in_array('ROLE_COMM', $user->getRoles())){
+                $user->setRoles(['ROLE_COMM']);
+            }
+            if (in_array('ROLE_REVIEWER', $user->getRoles())){
+                $user->setRoles(['ROLE_REVIEWER']);
+            }
+
             $password = $passwordEncoder->encodePassword($user, $user->getPassword());
             $user->setPassword($password);
 
@@ -135,7 +150,16 @@ class UserController extends AbstractController
     /**
      * @Route("/{id}", name="user_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, User $user): Response
+    public function delete(
+        Request $request,
+        User $user,
+        UserManager $userManager,
+        ContentManager $contentManager,
+        CommentManager $commentManager,
+        ApprovalManager $approvalManager,
+        PublicationManager $publicationManager,
+        ModificationManager $modificationManager
+    ): Response
     {
         if ($this->getUser() === null) {
             return $this->render('main/error_connection.html.twig');
@@ -146,6 +170,7 @@ class UserController extends AbstractController
         }
 
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+            $this->removeUserRelatedData($user, $userManager, $contentManager, $commentManager, $approvalManager, $publicationManager, $modificationManager);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($user);
             $entityManager->flush();
@@ -242,4 +267,85 @@ class UserController extends AbstractController
 
         return $this->redirectToRoute('user_edit', ['id' => $request -> get('idUser')] );
     }
+
+    private function removeUserRelatedData(
+        User $user,
+        UserManager $userManager,
+        ContentManager $contentManager,
+        CommentManager $commentManager,
+        ApprovalManager $approvalManager,
+        PublicationManager $publicationManager,
+        ModificationManager $modificationManager
+    )
+    {
+        $toDelete = $userManager->prepareUserToDeletion($user, $contentManager,$commentManager,$approvalManager,$publicationManager,$modificationManager);
+
+        foreach ($toDelete['comments'] as $comment){
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($comment);
+            $entityManager->flush();
+        }
+
+        foreach ($toDelete['approvals'] as $approval){
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($approval);
+            $entityManager->flush();
+        }
+
+        foreach ($toDelete['modifications'] as $modification){
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($modification);
+            $entityManager->flush();
+        }
+
+        foreach ($toDelete['publications'] as $publication){
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($publication);
+            $entityManager->flush();
+        }
+
+        foreach ($toDelete['contents'] as $submission){
+            $this->removeContentRelatedData($submission,$contentManager,$commentManager,$approvalManager,$publicationManager,$modificationManager);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($submission);
+            $entityManager->flush();
+        }
+    }
+
+    private function removeContentRelatedData(
+        Content $content,
+        ContentManager $contentManager,
+        CommentManager $commentManager,
+        ApprovalManager $approvalManager,
+        PublicationManager $publicationManager,
+        ModificationManager $modificationManager
+    )
+    {
+        $toDelete = $contentManager->prepareContentToDeletion($content, $commentManager, $approvalManager, $publicationManager, $modificationManager);
+
+        foreach ($toDelete['comments'] as $comment){
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($comment);
+            $entityManager->flush();
+        }
+
+        foreach ($toDelete['approvals'] as $approval){
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($approval);
+            $entityManager->flush();
+        }
+
+        foreach ($toDelete['modifications'] as $modification){
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($modification);
+            $entityManager->flush();
+        }
+
+        foreach ($toDelete['publications'] as $publication){
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($publication);
+            $entityManager->flush();
+        }
+    }
+
 }

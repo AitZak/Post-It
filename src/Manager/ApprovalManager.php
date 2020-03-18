@@ -92,6 +92,7 @@ class ApprovalManager
         $approvals = $this->approvalRepository->findBy(['user' => $user]);
         $approvalsAccepted = $this->approvalRepository->findBy(['user' => $user, 'status' => 1]);
         $approvalsRejected= $this->approvalRepository->findBy(['user' => $user, 'status' => 2]);
+        $infos['approvals'] = $approvals;
         $infos['nbReviews'] = count($approvals);
         $infos['acceptedReviews'] = $approvalsAccepted;
         $infos['rejectedReviews'] = $approvalsRejected;

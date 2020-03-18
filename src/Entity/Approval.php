@@ -17,14 +17,22 @@ class Approval
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="approval", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @var \User
+     *
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * })
      */
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Content", inversedBy="approval", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @var \Content
+     *
+     * @ORM\ManyToOne(targetEntity="Content")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="content_id", referencedColumnName="id")
+     * })
      */
     private $content;
 

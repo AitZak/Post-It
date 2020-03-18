@@ -5,6 +5,7 @@ namespace App\Manager;
 use App\Entity\Content;
 use App\Entity\User;
 use App\Repository\ContentRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 class ContentManager
 {
@@ -43,12 +44,14 @@ class ContentManager
     {
         $infos = [];
 
-        $submissions = $this->contentRepository->findBy(['userSubmit' => $user, 'statut' => 0]);
+        $submissions = $this->contentRepository->findBy(['userSubmit' => $user]);
+        $unreviewedSubmissions = $this->contentRepository->findBy(['userSubmit' => $user, 'statut' => 0]);
         $acceptedSubmissions = $this->contentRepository->findBy(['userSubmit' => $user, 'statut' => 1]);
         $refusedSubmissions = $this->contentRepository->findBy(['userSubmit' => $user, 'statut' => 2]);
         $publishedSubmissions = $this->contentRepository->findBy(['userSubmit' => $user, 'statut' => 3]);
 
-        $infos['unreviewedSubmissions'] = $submissions;
+        $infos['submissions'] = $submissions;
+        $infos['unreviewedSubmissions'] = $unreviewedSubmissions;
         $infos['acceptedSubmissions'] = $acceptedSubmissions;
         $infos['refusedSubmissions'] = $refusedSubmissions;
         $infos['publishedSubmissions'] = $publishedSubmissions;
@@ -66,6 +69,27 @@ class ContentManager
         $infos['publications'] = $publications;
 
         return $infos;
+    }
+
+    public function prepareContentToDeletion(
+        Content $content,
+        CommentManager $commentManager,
+        ApprovalManager $approvalManager,
+        PublicationManager $publicationManager,
+        ModificationManager $modificationManager
+    )
+    {
+        $comments = $commentManager->getCommentByContent($content);
+        $approvals = $approvalManager->getAllApprovalsByContent($content);
+        $publications = $publicationManager->getPublicationsByContent($content);
+        $modifications = $modificationManager->getModificationsByContent($content);
+
+        return [
+            'comments' => $comments,
+            'approvals' => $approvals['approvals'],
+            'publications' => $publications,
+            'modifications' => $modifications,
+        ];
     }
 
 }
