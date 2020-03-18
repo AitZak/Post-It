@@ -19,18 +19,17 @@
             </div>
 
             <h1 class="post-title" style="display: inline-block">
-                <h3>Review</h3>
-
-                <button class="btn btn-success review" value="1">Approved</button>
-                <button class="btn btn-danger review" value="2">Rejected</button>
 
                 {% if content.statut == 1 %}
+                    <br>
                     <button class="btn btn-success" id="publish" name="publish">Publier</button>
                 {% endif %}
 
+                <h3>Review</h3>
+
                 {% if currentUser.roles.0 in ['ROLE_REVIEWER', 'ROLE_COMM', 'ROLE_ADMIN'] %}
                     {% if currentUserApproval is empty %}
-                        <p>Vous n'aveé pas encore émis de review.</p>
+                        <p>Vous n'avez pas encore émis de review.</p>
                     {% elseif currentUserApproval.status == 1 %}
                         <p>Vous avez accepté ce contenu.</p>
                     {% elseif currentUserApproval.status == 2 %}
