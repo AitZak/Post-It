@@ -73,8 +73,13 @@ class ContentController extends AbstractController
     /**
      * @Route("/{id}", name="content_show", methods={"GET","POST"})
      */
-    public function show(Content $content, Request $request,EntityManagerInterface $entityManager): Response
+    public function show(Content $content, Request $request, EntityManagerInterface $entityManager, ApprovalManager $approvalManager): Response
     {
+        $approvals = $approvalManager->getAllApprovalsByContent($content);
+
+        $user = $this->getUser();
+        $currentUserApproval = $approvalManager->getCurrentUserApprovalByContent($content, $user);
+
         $comments = $this->getDoctrine()
             ->getRepository(Comment::class)
             ->findBy(
@@ -101,6 +106,9 @@ class ContentController extends AbstractController
             'comment_form' => $commentForm->createView(),
             'content' => $content,
             'comments' => $comments,
+            'approvals' => $approvals,
+            'currentUser' => $this->getUser(),
+            'currentUserApproval' => $currentUserApproval,
         ]);
     }
 
