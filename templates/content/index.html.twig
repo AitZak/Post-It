@@ -50,6 +50,9 @@
                     {% if content.statut == 1 %}
                         <a href="{{ path('publish', {'contentId': content.id}) }}">publier</a>
                     {% endif %}
+                    {% if app.user.id == content.userSubmit.id or app.user.roles.0 in ['ROLE_ADMIN', 'ROLE_COMM', 'ROLE_REVIEWER'] %}
+                        <a href="{{ path('content_edit', {'id': content.id}) }}"> <i class="fas fa-edit"></i></a>
+                    {% endif %}
                 </td>
 
             </tr>
