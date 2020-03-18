@@ -16,8 +16,9 @@
                     <a class="nav-link js-scroll-trigger" href="{{ path('content_index') }}"> Publications </a>
                 </li>
 
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                 <li class="nav-item dropdown">
-                    <a {% if not is_granted('IS_AUTHENTICATED_FULLY') %}hidden{%endif%} class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                     > Mon Espace </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -33,6 +34,7 @@
 
                     </div>
                 </li>
+                {%endif%}
 
                 </li>
 
