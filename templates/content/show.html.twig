@@ -140,8 +140,6 @@
                 </table>
                 <br><br>
 
-           
-                
 
                 <br>
 
@@ -151,10 +149,12 @@
                 <button class="btn btn-success review" value="1">Approved</button>
                 <button class="btn btn-danger review" value="2">Rejected</button>
 
-                {% if content.statut == 1 %}
-                    <button class="btn btn-success" id="publish" name="publish">Publier</button>
+                {% if app.user.roles.0 in ['ROLE_ADMIN', 'ROLE_COMM'] %}
+                    {% if content.statut == 1 %}
+                        <button class="btn btn-success" id="publish" name="publish">Publier</button>
+                    {% endif %}
                 {% endif %}
-                
+
                 {% if currentUser.roles.0 in ['ROLE_REVIEWER', 'ROLE_COMM', 'ROLE_ADMIN'] %}
                     {% if currentUserApproval is empty %}
                         <p>Vous n'aveé pas encore émis de review.</p>
