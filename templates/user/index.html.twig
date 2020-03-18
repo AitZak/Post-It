@@ -3,18 +3,23 @@
 {% block title %}User index{% endblock %}
 
 {% block body %}
-    <h1>User index</h1>
+<div class="container" id="down">
+    <div class="row">
+        <div class="col-lg-12 col-md-10 mx-auto">
+            <h1 class="post-title">Liste des Utilisateurs  </h1>
+    <h1></h1>
 
-    <table class="table">
-        <thead>
+            <table class="table table-bordered"  >
+                <thead class="thead-dark">
+                
             <tr>
-                <th>Id</th>
-                <th>Firstname</th>
-                <th>Lastname</th>
-                <th>Email</th>
-                <th>Password</th>
-                <th>Role</th>
-                <th>actions</th>
+                <th scope="col">Id</th>
+                <th scope="col">Firstname</th>
+                <th scope="col">Lastname</th>
+                <th scope="col">Email</th>
+
+                <th scope="col">Role</th>
+                <th scope="col">actions</th>
             </tr>
         </thead>
         <tbody>
@@ -24,15 +29,15 @@
                 <td>{{ user.firstname }}</td>
                 <td>{{ user.lastname }}</td>
                 <td>{{ user.email }}</td>
-                <td>{{ user.password }}</td>
+
                 <td>
                     {% for role in user.roles %}
                     {{ role }}<br>
                     {% endfor %}
                 </td>
                 <td>
-                    <a href="{{ path('user_show', {'id': user.id}) }}">show</a>
-                    <a href="{{ path('user_edit', {'id': user.id}) }}">edit</a>
+                    <a href="{{ path('user_show', {'id': user.id}) }}"><i class="fas fa-eye"></i></a>
+                    <a href="{{ path('user_edit', {'id': user.id}) }}"><i class="fas fa-edit"></i></a>
                 </td>
             </tr>
         {% else %}
@@ -44,4 +49,8 @@
     </table>
 
     <a href="{{ path('user_new') }}">Create new</a>
+
+        </div>
+    </div>
+</div>
 {% endblock %}

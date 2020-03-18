@@ -3,24 +3,35 @@
 {% block title %}Comment{% endblock %}
 
 {% block body %}
-    <h1>Comment</h1>
+<div class="container" id="down">
+    <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+    <h1>Commentaires</h1>
 
-    <table class="table">
+    <table class="table table-bordered" >
+        <thead class="thead-dark">
         <tbody>
             <tr>
-                <th>Id</th>
+                <th scope="col">Id</th>
                 <td>{{ comment.id }}</td>
             </tr>
             <tr>
-                <th>Message</th>
+                <th scope="col">Message</th>
                 <td>{{ comment.message }}</td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('comment_index') }}">back to list</a>
+            <button type="submit" class="btn btn-outline-primary">
+    <a href="{{ path('comment_index') }}">back to list
+                <span class="btn-label"><i class="fas fa-arrow-left"></i></span>
+                back to list</a></button>
 
     <a href="{{ path('comment_edit', {'id': comment.id}) }}">edit</a>
 
     {{ include('comment/_delete_form.html.twig') }}
+
+        </div>
+    </div>
+</div>
 {% endblock %}
