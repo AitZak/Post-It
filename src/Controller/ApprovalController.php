@@ -38,7 +38,7 @@ class ApprovalController extends AbstractController
         if (!$content->getApprovalDate()){
             $content->setApprovalDate($date);
         }
-        if ($content->getStatut() === 2) {
+        if ($content->getStatut() === 2 && ($this->getUser()->getRoles() !== ['ROLE_ADMIN'] && $this->getUser()->getRoles() !== ['ROLE_COMM'])) {
             return new Response(
                 "Ce contenu a été refusé par un autre reviewer, veuillez passer par un communicant si vous souhaitez que ce contenu soit publié."
             );
@@ -56,16 +56,16 @@ class ApprovalController extends AbstractController
             $em->persist($approval);
             $em->flush();
 
-            return $this->redirectToRoute('content_show', [
-                'id'=>$content->getId()
-            ]);
+            return new Response(
+                'Votre review a bien été pris en compte'
+            );
         }
         $review->setStatus(intval($request->get('status')));
         $em->flush();
 
-        return $this->redirectToRoute('content_show', [
-            'id'=>$content->getId()
-        ]);
+        return new Response(
+            'Votre review a bien été pris en compte'
+        );
     }
 
     /**

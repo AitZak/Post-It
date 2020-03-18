@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h3>En attente de review</h3>
+    <ul>
+        {% for content in submissions.unreviewedSubmissions%}
+            <li><a href="{{ path('content_show', {'id': content.id}) }}">{{ content.title }}</a></li>
+        {% endfor %}
+    </ul>
+    <h3>Soummissions acceptées</h3>
+    <ul>
+        {% for content in submissions.acceptedSubmissions%}
+            <li><a href="{{ path('content_show', {'id': content.id}) }}">{{ content.title }}</a></li>
+        {% endfor %}
+    </ul>
+    <h3>Soummissions refusés</h3>
+    <ul>
+        {% for content in submissions.refusedSubmissions%}
+            <li><a href="{{ path('content_show', {'id': content.id}) }}">{{ content.title }}</a></li>
+        {% endfor %}
+    </ul>
+    <h3>Soummissions Publiées</h3>
+    <ul>
+        {% for content in submissions.publishedSubmissions%}
+            <li><a href="{{ path('content_show', {'id': content.id}) }}">{{ content.title }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}

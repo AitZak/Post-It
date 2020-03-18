@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <p>{{ publicationsInfos.nbPublications }} de vos soummissions ont été publiées.</p>
+    <h3>Mes soumissions publiées</h3>
+    <ul>
+        {% for publication in publicationsInfos.publications %}
+            <li><a href="{{ path('content_show', {'id': review.content.id}) }}">{{ publication.content.title }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}
