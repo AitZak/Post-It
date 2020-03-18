@@ -19,6 +19,14 @@ class SocialNetworkController extends AbstractController
      */
     public function index(): Response
     {
+        if ($this->getUser() === null) {
+            return $this->render('main/error_connection.html.twig');
+        }
+
+        if ($this->getUser()->getRoles() !== ['ROLE_ADMIN']) {
+            return $this->render('main/error_role.html.twig');
+        }
+
         $socialNetworks = $this->getDoctrine()
             ->getRepository(SocialNetwork::class)
             ->findAll();
@@ -33,6 +41,14 @@ class SocialNetworkController extends AbstractController
      */
     public function new(Request $request): Response
     {
+        if ($this->getUser() === null) {
+            return $this->render('main/error_connection.html.twig');
+        }
+
+        if ($this->getUser()->getRoles() !== ['ROLE_ADMIN']) {
+            return $this->render('main/error_role.html.twig');
+        }
+
         $socialNetwork = new SocialNetwork();
         $form = $this->createForm(SocialNetworkType::class, $socialNetwork);
         $form->handleRequest($request);
@@ -56,6 +72,14 @@ class SocialNetworkController extends AbstractController
      */
     public function show(SocialNetwork $socialNetwork): Response
     {
+        if ($this->getUser() === null) {
+            return $this->render('main/error_connection.html.twig');
+        }
+
+        if ($this->getUser()->getRoles() !== ['ROLE_ADMIN']) {
+            return $this->render('main/error_role.html.twig');
+        }
+
         return $this->render('social_network/show.html.twig', [
             'social_network' => $socialNetwork,
         ]);
@@ -66,6 +90,14 @@ class SocialNetworkController extends AbstractController
      */
     public function edit(Request $request, SocialNetwork $socialNetwork): Response
     {
+        if ($this->getUser() === null) {
+            return $this->render('main/error_connection.html.twig');
+        }
+
+        if ($this->getUser()->getRoles() !== ['ROLE_ADMIN']) {
+            return $this->render('main/error_role.html.twig');
+        }
+
         $form = $this->createForm(SocialNetworkType::class, $socialNetwork);
         $form->handleRequest($request);
 
@@ -86,6 +118,14 @@ class SocialNetworkController extends AbstractController
      */
     public function delete(Request $request, SocialNetwork $socialNetwork): Response
     {
+        if ($this->getUser() === null) {
+            return $this->render('main/error_connection.html.twig');
+        }
+
+        if ($this->getUser()->getRoles() !== ['ROLE_ADMIN']) {
+            return $this->render('main/error_role.html.twig');
+        }
+
         if ($this->isCsrfTokenValid('delete'.$socialNetwork->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($socialNetwork);

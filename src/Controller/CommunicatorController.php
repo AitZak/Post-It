@@ -20,6 +20,14 @@ class CommunicatorController extends AbstractController
      */
     public function dashboard(ApprovalManager $approvalManager, ContentManager $contentManager): Response
     {
+        if ($this->getUser() === null) {
+            return $this->render('main/error_connection.html.twig');
+        }
+
+        if ($this->getUser()->getRoles() !== ['ROLE_ADMIN'] && $this->getUser()->getRoles() !== ['ROLE_COMM']) {
+            return $this->render('main/error_role.html.twig');
+        }
+
         $contents = $contentManager->getLastAcceptedContents();
         $approvalStats = $approvalManager->getApprovalStatistics();
         $contentStats = $contentManager->getContentStatistics();

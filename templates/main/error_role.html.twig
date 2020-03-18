@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Role insuffisant{% endblock %}
+
+{% block body %}
+    <p>Votre role ({{ app.user.roles.0 }}) ne vous permet pas d'accéder a cette page ou d'effectuer cette action.</p>
+    <button type="submit" class="btn btn-outline-success">
+        <a href="{{ path('home') }}"> <span class="btn-label"><i class="fas fa-home"></i></span>
+            back to home</a></button>
+{% endblock %}
