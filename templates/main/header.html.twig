@@ -16,8 +16,10 @@
                     <a class="nav-link js-scroll-trigger" href="{{ path('content_index') }}"> Publications </a>
                 </li>
 
+
                 <li class="nav-item dropdown">
-                    <a {% if not is_granted('IS_AUTHENTICATED_FULLY') %}hidden{%endif%} class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                     > Mon Espace </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -30,21 +32,27 @@
                             <a class="dropdown-item" href="{{ path('user_publications', {'id': app.user.id}) }}">Mes Publications</a>
                         {% endif %}
 
-
                     </div>
+                    {%endif%}
                 </li>
 
-                </li>
 
-                {% if app.user.roles.0 in ['ROLE_ADMIN', 'ROLE_COMM'] %}
-                    <li class="nav-item">
-                        <a href="{{ path('dashboard_index') }}">Communication Dashboard</a>
-                    </li>
+                </li>
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    {% if app.user.roles.0 in ['ROLE_ADMIN', 'ROLE_COMM'] %}
+                        <li class="nav-item">
+                            <a href="{{ path('dashboard_index') }}">Communication Dashboard</a>
+                        </li>
+                    {% endif %}
                 {% endif %}
 
 
-                 <li class="nav-item">
-                    <a {% if is_granted('IS_AUTHENTICATED_FULLY') %}hidden{%endif%} href="{{ path('login') }}"> Se connecter </a>
+
+
+                <li class="nav-item">
+                     {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+                         <a  href="{{ path('login') }}"> Se connecter </a>
+                     {%endif%}
                 </li>
                 <li class="nav-item dropdown">
                     <a  {% if not is_granted('ROLE_ADMIN') %}hidden{%endif%} class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
