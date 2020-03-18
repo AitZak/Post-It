@@ -46,7 +46,6 @@
                 <td>{{ content.publicationDate ? content.publicationDate|date('Y-m-d H:i') : '' }}</td>
                 <td>                 
                     <a href="{{ path('content_show', {'id': content.id}) }}"> <i class="fas fa-eye"></i></a>
-                    <a href="{{ path('content_edit', {'id': content.id}) }}"> <i class="fas fa-edit"></i></a>
                     {% if content.statut == 1 %}
                         <a href="{{ path('publish', {'contentId': content.id}) }}">publier</a>
                     {% endif %}
@@ -72,3 +71,4 @@
     </div>
 </div>
 {% endblock %}
+

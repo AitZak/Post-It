@@ -10,8 +10,11 @@
             <tr>
                 <th>Id</th>
                 <th>Name</th>
-                <th>ClientId</th>
-                <th>ClientSecret</th>
+                <th>Client Id</th>
+                <th>Client Secret</th>
+                <th>Token</th>
+                <th>Token Secret</th>
+
                 <th>actions</th>
             </tr>
         </thead>
@@ -22,6 +25,9 @@
                 <td>{{ social_network.name }}</td>
                 <td>{{ social_network.clientId }}</td>
                 <td>{{ social_network.clientSecret }}</td>
+                <td>{{ social_network.token }}</td>
+                <td>{{ social_network.tokenSecret }}</td>
+
                 <td>
                     <a href="{{ path('social_network_show', {'id': social_network.id}) }}">show</a>
                     <a href="{{ path('social_network_edit', {'id': social_network.id}) }}">edit</a>
