@@ -37,9 +37,11 @@
             </tr>
             <tr>
                 <th>Social Networks</th>
-                {% for socials in user.socialNetwork %}
-                    <td>{{socialNetWork.name}}</td>
-                {% endfor %}
+                <td><ul>{% for socials in user.socialNetwork %}
+                            <li>{{socials.name}}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
             </tr>
         </tbody>
     </table>
