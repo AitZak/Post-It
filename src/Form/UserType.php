@@ -28,7 +28,7 @@ class UserType extends AbstractType
                 'second_options' => ['label' => 'Repeated password'],
             ])
             ->add('roles', ChoiceType::class, [
-                'multiple' => false,
+                'multiple' => true,
                 'choices'  => [
                     'Administrateur' => 'ROLE_ADMIN',
                     'Communication' => 'ROLE_COMM',

@@ -8,6 +8,10 @@ use App\Entity\Modification;
 use App\Form\CommentType;
 use App\Form\ContentType;
 use App\Manager\ApprovalManager;
+use App\Manager\CommentManager;
+use App\Manager\ContentManager;
+use App\Manager\ModificationManager;
+use App\Manager\PublicationManager;
 use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -180,7 +184,15 @@ class ContentController extends AbstractController
     /**
      * @Route("/{id}", name="content_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, Content $content): Response
+    public function delete(
+        Request $request,
+        Content $content,
+        ContentManager $contentManager,
+        CommentManager $commentManager,
+        ApprovalManager $approvalManager,
+        PublicationManager $publicationManager,
+        ModificationManager $modificationManager
+    ): Response
     {
         if ($this->getUser() === null) {
             return $this->render('main/error_connection.html.twig');
@@ -190,12 +202,50 @@ class ContentController extends AbstractController
             return $this->render('main/error_role.html.twig');
         }
 
+
         if ($this->isCsrfTokenValid('delete'.$content->getId(), $request->request->get('_token'))) {
+            $this->removeContentRelatedData($content,$contentManager,$commentManager,$approvalManager,$publicationManager,$modificationManager);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($content);
             $entityManager->flush();
         }
 
         return $this->redirectToRoute('content_index');
+    }
+
+    private function removeContentRelatedData(
+        Content $content,
+        ContentManager $contentManager,
+        CommentManager $commentManager,
+        ApprovalManager $approvalManager,
+        PublicationManager $publicationManager,
+        ModificationManager $modificationManager
+    )
+    {
+        $toDelete = $contentManager->prepareContentToDeletion($content, $commentManager, $approvalManager, $publicationManager, $modificationManager);
+
+        foreach ($toDelete['comments'] as $comment){
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($comment);
+            $entityManager->flush();
+        }
+
+        foreach ($toDelete['approvals'] as $approval){
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($approval);
+            $entityManager->flush();
+        }
+
+        foreach ($toDelete['modifications'] as $modification){
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($modification);
+            $entityManager->flush();
+        }
+
+        foreach ($toDelete['publications'] as $publication){
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($publication);
+            $entityManager->flush();
+        }
     }
 }
