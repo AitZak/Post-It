@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Content;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use FOS\CKEditorBundle\FOSCKEditorBundle;
@@ -24,6 +25,15 @@ class ContentType extends AbstractType
             ->add('file', FileType::class, [
                 'mapped' => false,
                 'required' => false,
+            ])
+            ->add('typeFile', ChoiceType::class, [
+                'multiple' => false,
+                'choices'  => [
+                    'text' => 'text',
+                    'photo' => 'photo',
+                    'video' => 'video',
+                    'link' => 'link',
+                ],
             ])
         ;
     }

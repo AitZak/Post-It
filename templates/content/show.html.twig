@@ -49,6 +49,13 @@
                     <a href="{{ path('content_index') }}"> <span class="btn-label"><i
                                     class="fas fa-arrow-left"></i></span>
                         back to list</a></button>
+                        
+                <button type="submit" class="btn btn-outline-primary">
+                    <a href="{{ path('content_edit', {'id': content.id}) }}"><span class="btn-label"><i
+                                    class="fas fa-edit"></i></span>
+                        edit</a></button>
+                        
+                <br>
                 <h5>Add a comment</h5>
 
                 {{ include('comment/_form.html.twig') }}
@@ -78,16 +85,21 @@
                 </table>
                 <br><br>
 
-                <a href="{{ path('content_index') }}">back to list</a>
-
-                <button type="submit" class="btn btn-outline-primary">
-                    <a href="{{ path('content_edit', {'id': content.id}) }}"><span class="btn-label"><i
-                                    class="fas fa-edit"></i></span>
-                        edit</a></button>
+           
+                
 
                 <br>
 
+                
                 <h3>Review</h3>
+                
+                <button class="btn btn-success review" value="1">Approved</button>
+                <button class="btn btn-danger review" value="2">Rejected</button>
+
+                {% if content.statut == 1 %}
+                    <button class="btn btn-success" id="publish" name="publish">Publier</button>
+                {% endif %}
+                
                 {% if currentUser.roles.0 in ['ROLE_REVIEWER', 'ROLE_COMM', 'ROLE_ADMIN'] %}
                     {% if currentUserApproval is empty %}
                         <p>Vous n'aveé pas encore émis de review.</p>
@@ -116,6 +128,23 @@
             src="https://code.jquery.com/jquery-2.2.4.min.js">
     </script>
     <script>
+        $(function(){
+            $("#publish").click(function() {
+                $.ajax({
+                    url: '{{ path('publish') }}',
+                    type: 'GET',
+                    data: {contentId: {{content.id}}},
+
+                    success: function(data) {
+                        alert("contenu publié");
+                        location.reload(true);
+                    },
+                    error : function(xhr, textStatus, errorThrown) {
+                        alert(errorThrown);
+                    }
+                });
+            });
+        });
         $(function(){
             $(".review").click(function() {
                 var contentStatus = $(this).val();

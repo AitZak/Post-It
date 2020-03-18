@@ -43,6 +43,13 @@ class Content
     private $file;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="type_file", type="text", length=64, nullable=false)
+     */
+    private $typeFile;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="submit_date", type="datetime", nullable=false)
@@ -124,6 +131,18 @@ class Content
     public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getTypeFile(): ?string
+    {
+        return $this->typeFile;
+    }
+
+    public function setTypeFile(string $typeFile): self
+    {
+        $this->typeFile = $typeFile;
 
         return $this;
     }
