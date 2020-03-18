@@ -45,6 +45,19 @@
                  <li class="nav-item">
                     <a {% if is_granted('IS_AUTHENTICATED_FULLY') %}hidden{%endif%} href="{{ path('login') }}"> Se connecter </a>
                 </li>
+                <li class="nav-item dropdown">
+                    <a  {% if not is_granted('ROLE_ADMIN') %}hidden{%endif%} class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                            > Administration </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item"  href="{{ path('dashboard_index') }}">Dashbord</a>
+                        <a class="dropdown-item"  href="{{ path('social_network_index') }}">Socials</a>
+
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a  {% if not is_granted('ROLE_ADMIN') %}hidden{%endif%} href="{{ path('user_index') }}"> Rôles </a>
+                </li>
                 <li class="nav-item">
                     <a  {% if not is_granted('IS_AUTHENTICATED_FULLY') %}hidden{%endif%} href="{{ path('logout') }}"> Se déconnecter </a>
                 </li>
