@@ -85,4 +85,18 @@ class ApprovalManager
     {
         return $this->approvalRepository->findOneBy(['content' => $content, 'user' => $user]);
     }
+
+    public function getApprovalsByUser($user)
+    {
+        $infos = [];
+        $approvals = $this->approvalRepository->findAll();
+        $approvalsAccepted = $this->approvalRepository->findBy(['status' => 1]);
+        $approvalsRejected= $this->approvalRepository->findBy(['status' => 2]);
+        $infos['nbReviews'] = count($approvals);
+        $infos['acceptedReviews'] = $approvalsAccepted;
+        $infos['rejectedReviews'] = $approvalsRejected;
+
+        return $infos;
+    }
+
 }

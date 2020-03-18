@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <p>Vous avez fait {{ reviews.nbReviews }} review(s).</p>
+    <h3>Contenus acceptés</h3>
+    <ul>
+        {% for review in reviews.acceptedReviews %}
+            <li><a href="{{ path('content_show', {'id': review.content.id}) }}">{{ review.content.title }}</a></li>
+            <br>
+        {% endfor %}
+    </ul>
+    <h3>Contenus refusés</h3>
+    <ul>
+        {% for review in reviews.rejectedReviews %}
+            <li><a href="{{ path('content_show', {'id': review.content.id}) }}">{{ review.content.title }}</a></li>
+            <br>
+        {% endfor %}
+    </ul>
+{% endblock %}
