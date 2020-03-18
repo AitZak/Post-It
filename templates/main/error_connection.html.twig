@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Non Connecté{% endblock %}
+
+{% block body %}
+    <p>Vous devez être connecté pour accéder à cet page.</p>
+    <button type="submit" class="btn btn-outline-success">
+        <a href="{{ path('home') }}"> <span class="btn-label"><i class="fas fa-home"></i></span>
+            back to home</a></button>
+{% endblock %}

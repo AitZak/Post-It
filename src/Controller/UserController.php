@@ -26,6 +26,14 @@ class UserController extends AbstractController
      */
     public function index(): Response
     {
+        if ($this->getUser() === null) {
+            return $this->render('main/error_connection.html.twig');
+        }
+
+        if ($this->getUser()->getRoles() !== ['ROLE_ADMIN']) {
+            return $this->render('main/error_role.html.twig');
+        }
+
         $users = $this->getDoctrine()
             ->getRepository(User::class)
             ->findAll();
@@ -40,6 +48,14 @@ class UserController extends AbstractController
      */
     public function new(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
+        if ($this->getUser() === null) {
+            return $this->render('main/error_connection.html.twig');
+        }
+
+        if ($this->getUser()->getRoles() !== ['ROLE_ADMIN']) {
+            return $this->render('main/error_role.html.twig');
+        }
+
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
@@ -66,6 +82,14 @@ class UserController extends AbstractController
      */
     public function show(User $user): Response
     {
+        if ($this->getUser() === null) {
+            return $this->render('main/error_connection.html.twig');
+        }
+
+        if ($user !== $this->getUser() && $this->getUser()->getRoles() !== ['ROLE_ADMIN']) {
+            return $this->render('main/error_role.html.twig');
+        }
+
         return $this->render('user/show.html.twig', [
             'user' => $user,
         ]);
@@ -76,6 +100,14 @@ class UserController extends AbstractController
      */
     public function edit(Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder): Response
     {
+        if ($this->getUser() === null) {
+            return $this->render('main/error_connection.html.twig');
+        }
+
+        if ($user !== $this->getUser() && $this->getUser()->getRoles() !== ['ROLE_ADMIN']) {
+            return $this->render('main/error_role.html.twig');
+        }
+
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
@@ -98,6 +130,14 @@ class UserController extends AbstractController
      */
     public function delete(Request $request, User $user): Response
     {
+        if ($this->getUser() === null) {
+            return $this->render('main/error_connection.html.twig');
+        }
+
+        if ($this->getUser()->getRoles() !== ['ROLE_ADMIN']) {
+            return $this->render('main/error_role.html.twig');
+        }
+
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($user);
@@ -112,6 +152,10 @@ class UserController extends AbstractController
      */
     public function mySubmissions(User $user, ContentManager $contentManager): Response
     {
+        if ($this->getUser() === null) {
+            return $this->render('main/error_connection.html.twig');
+        }
+
         $submissions = $contentManager->getSubmissionsByUser($user);
         return $this->render('user/submissions.html.twig', [
             'user' => $user,
@@ -124,6 +168,14 @@ class UserController extends AbstractController
      */
     public function myReviews(User $user, ApprovalManager $approvalManager): Response
     {
+        if ($this->getUser() === null) {
+            return $this->render('main/error_connection.html.twig');
+        }
+
+        if ($this->getUser()->getRoles() !== ['ROLE_ADMIN'] && $this->getUser()->getRoles() !== ['ROLE_COMM'] && $this->getUser()->getRoles() !== ['ROLE_REVIEWER']) {
+            return $this->render('main/error_role.html.twig');
+        }
+
         $reviews = $approvalManager->getApprovalsByUser($user);
         return $this->render('user/reviews.html.twig', [
             'user' => $user,
@@ -136,6 +188,14 @@ class UserController extends AbstractController
      */
     public function myPublications(User $user, ContentManager $contentManager): Response
     {
+        if ($this->getUser() === null) {
+            return $this->render('main/error_connection.html.twig');
+        }
+
+        if ($this->getUser()->getRoles() !== ['ROLE_ADMIN'] && $this->getUser()->getRoles() !== ['ROLE_COMM']) {
+            return $this->render('main/error_role.html.twig');
+        }
+
         $publications = $contentManager->getPublicatedSubmissionsByUser($user);
         return $this->render('user/publications.html.twig', [
             'user' => $user,

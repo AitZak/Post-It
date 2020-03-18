@@ -19,6 +19,14 @@ class CommentController extends AbstractController
      */
     public function index(): Response
     {
+        if ($this->getUser() === null) {
+            return $this->render('main/error_connection.html.twig');
+        }
+
+        if ($this->getUser()->getRoles() !== ['ROLE_ADMIN']) {
+            return $this->render('main/error_role.html.twig');
+        }
+
         $comments = $this->getDoctrine()
             ->getRepository(Comment::class)
             ->findAll();
@@ -33,6 +41,10 @@ class CommentController extends AbstractController
      */
     public function new(Request $request): Response
     {
+        if ($this->getUser() === null) {
+            return $this->render('main/error_connection.html.twig');
+        }
+
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
@@ -56,6 +68,10 @@ class CommentController extends AbstractController
      */
     public function show(Comment $comment): Response
     {
+        if ($this->getUser() === null) {
+            return $this->render('main/error_connection.html.twig');
+        }
+
         return $this->render('comment/show.html.twig', [
             'comment' => $comment,
         ]);
@@ -66,6 +82,14 @@ class CommentController extends AbstractController
      */
     public function edit(Request $request, Comment $comment): Response
     {
+        if ($this->getUser() === null) {
+            return $this->render('main/error_connection.html.twig');
+        }
+
+        if ($comment->getUser() !== $this->getUser() && $this->getUser()->getRoles() !== ['ROLE_ADMIN']) {
+            return $this->render('main/error_role.html.twig');
+        }
+
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
 
@@ -86,6 +110,14 @@ class CommentController extends AbstractController
      */
     public function delete(Request $request, Comment $comment): Response
     {
+        if ($this->getUser() === null) {
+            return $this->render('main/error_connection.html.twig');
+        }
+
+        if ($comment->getUser() !== $this->getUser() && $this->getUser()->getRoles() !== ['ROLE_ADMIN']) {
+            return $this->render('main/error_role.html.twig');
+        }
+
         if ($this->isCsrfTokenValid('delete'.$comment->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($comment);

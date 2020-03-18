@@ -24,6 +24,14 @@ class ApprovalController extends AbstractController
      */
     public function index(ApprovalRepository $approvalRepository): Response
     {
+        if ($this->getUser() === null) {
+            return $this->render('main/error_connection.html.twig');
+        }
+
+        if ($this->getUser()->getRoles() !== ['ROLE_ADMIN']) {
+            return $this->render('main/error_role.html.twig');
+        }
+
         return $this->render('approval/index.html.twig', [
             'approvals' => $approvalRepository->findAll(),
         ]);
@@ -34,6 +42,14 @@ class ApprovalController extends AbstractController
      */
     public function new(Request $request, EntityManagerInterface $em, ContentManager $contentManager, ApprovalManager $approvalManager): Response
     {
+        if ($this->getUser() === null) {
+            return $this->render('main/error_connection.html.twig');
+        }
+
+        if ($this->getUser()->getRoles() !== ['ROLE_ADMIN'] && $this->getUser()->getRoles() !== ['ROLE_COMM'] && $this->getUser()->getRoles() !== ['ROLE_REVIEWER']) {
+            return $this->render('main/error_role.html.twig');
+        }
+
         $date = new \DateTime();
         $content = $contentManager->getContentById(intval($request->get('content_id')));
         if (!$content->getApprovalDate()){
@@ -74,6 +90,14 @@ class ApprovalController extends AbstractController
      */
     public function show(ApprovalManager $approvalManager): Response
     {
+        if ($this->getUser() === null) {
+            return $this->render('main/error_connection.html.twig');
+        }
+
+        if ($this->getUser()->getRoles() !== ['ROLE_ADMIN']) {
+            return $this->render('main/error_role.html.twig');
+        }
+
         $user = $this->getUser();
         $acceptedReviews = $approvalManager->getAccpetedReviewsByUser($user);
         $rejectedReviews = $approvalManager->getRejectedReviewsByUser($user);
@@ -90,6 +114,14 @@ class ApprovalController extends AbstractController
      */
     public function edit(Request $request, Approval $approval): Response
     {
+        if ($this->getUser() === null) {
+            return $this->render('main/error_connection.html.twig');
+        }
+
+        if ($this->getUser()->getRoles() !== ['ROLE_ADMIN']) {
+            return $this->render('main/error_role.html.twig');
+        }
+
         $form = $this->createForm(ApprovalType::class, $approval);
         $form->handleRequest($request);
 
@@ -110,6 +142,14 @@ class ApprovalController extends AbstractController
      */
     public function delete(Request $request, Approval $approval): Response
     {
+        if ($this->getUser() === null) {
+            return $this->render('main/error_connection.html.twig');
+        }
+
+        if ($this->getUser()->getRoles() !== ['ROLE_ADMIN']) {
+            return $this->render('main/error_role.html.twig');
+        }
+
         if ($this->isCsrfTokenValid('delete'.$approval->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($approval);

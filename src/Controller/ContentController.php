@@ -26,9 +26,14 @@ class ContentController extends AbstractController
      */
     public function index(): Response
     {
-        if ($this->getUser()->getRoles() !== ['ROLE_ADMIN'] && $this->getUser()->getRoles() !== ['ROLE_COMM']) {
-            return new Response('You are not allowed to be here');
+        if ($this->getUser() === null) {
+            return $this->render('main/error_connection.html.twig');
         }
+
+        if ($this->getUser()->getRoles() !== ['ROLE_ADMIN'] && $this->getUser()->getRoles() !== ['ROLE_COMM']) {
+            return $this->render('main/error_role.html.twig');
+        }
+
         $contents = $this->getDoctrine()
             ->getRepository(Content::class)
             ->findAll();
@@ -43,6 +48,10 @@ class ContentController extends AbstractController
      */
     public function new(Request $request,FileUploader $fileUploader): Response
     {
+        if ($this->getUser() === null) {
+            return $this->render('main/error_connection.html.twig');
+        }
+
         $content = new Content();
         $form = $this->createForm(ContentType::class, $content);
         $form->handleRequest($request);
@@ -78,6 +87,14 @@ class ContentController extends AbstractController
      */
     public function show(Content $content, Request $request, EntityManagerInterface $entityManager, ApprovalManager $approvalManager): Response
     {
+        if ($this->getUser() === null) {
+            return $this->render('main/error_connection.html.twig');
+        }
+
+        if ($content->getUserSubmit() !== $this->getUser() && $this->getUser()->getRoles() !== ['ROLE_ADMIN'] && $this->getUser()->getRoles() !== ['ROLE_COMM'] && $this->getUser()->getRoles() !== ['ROLE_REVIEWER']) {
+            return $this->render('main/error_role.html.twig');
+        }
+
         $approvals = $approvalManager->getAllApprovalsByContent($content);
 
         $user = $this->getUser();
@@ -120,9 +137,14 @@ class ContentController extends AbstractController
      */
     public function edit(Request $request, EntityManagerInterface $em, Content $content, FileUploader $fileUploader): Response
     {
-        if ($content->getUserSubmit() !== $this->getUser() && $this->getUser()->getRoles() !== ['ROLE_ADMIN'] && $this->getUser()->getRoles() !== ['ROLE_COMM'] && $this->getUser()->getRoles() !== ['ROLE_REVIEWER']) {
-            return new Response('You are not allowed to be here');
+        if ($this->getUser() === null) {
+            return $this->render('main/error_connection.html.twig');
         }
+
+        if ($content->getUserSubmit() !== $this->getUser() && $this->getUser()->getRoles() !== ['ROLE_ADMIN'] && $this->getUser()->getRoles() !== ['ROLE_COMM'] && $this->getUser()->getRoles() !== ['ROLE_REVIEWER']) {
+            return $this->render('main/error_role.html.twig');
+        }
+
         $form = $this->createForm(ContentType::class, $content);
         $form->handleRequest($request);
 
@@ -160,6 +182,14 @@ class ContentController extends AbstractController
      */
     public function delete(Request $request, Content $content): Response
     {
+        if ($this->getUser() === null) {
+            return $this->render('main/error_connection.html.twig');
+        }
+
+        if ($content->getUserSubmit() !== $this->getUser() && $this->getUser()->getRoles() !== ['ROLE_ADMIN']) {
+            return $this->render('main/error_role.html.twig');
+        }
+
         if ($this->isCsrfTokenValid('delete'.$content->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($content);

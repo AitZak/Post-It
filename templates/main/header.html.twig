@@ -23,10 +23,10 @@
                  <li class="nav-item">
                     <a href="{{ path('home') }}">Home </a>
                 </li>
-                 <li class="nav-item">
-                    <a href="{{ path('user_submissions', {'id': app.user.id}) }}">Mes Soumissions</a>
-                </li>
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <li class="nav-item">
+                        <a href="{{ path('user_submissions', {'id': app.user.id}) }}">Mes Soumissions</a>
+                    </li>
                     {% if app.user.roles.0 in ['ROLE_ADMIN', 'ROLE_COMM', 'ROLE_REVIEWER'] %}
                         <li class="nav-item">
                             <a href="{{ path('user_reviews', {'id': app.user.id}) }}">Mes Reviews</a>
