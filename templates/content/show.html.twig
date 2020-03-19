@@ -39,9 +39,9 @@
                     <button {% if currentUserApproval is not empty and currentUserApproval.status == 1 %} style="opacity: 25%" {% endif %} class="btn btn-danger" value="2">Rejected</button>
                 {% endif  %}
 
-                <button type="submit" class="btn btn-outline-primary">
-                    <a href="{{ path('content_edit', {'id': content.id}) }}"><span class="btn-label"><i class="fas fa-edit"></i></span>
-                        edit</a></button>
+
+                    <a class="btn btn-outline-primary" href="{{ path('content_edit', {'id': content.id}) }}"><span class="btn-label"><i class="fas fa-edit"></i></span>
+                        edit</a>
                 <br>
                 {{ include('content/_delete_form.html.twig') }}
                 <br>
@@ -86,9 +86,9 @@
         </tbody>
     </table>
 
-            <button type="submit" class="btn btn-outline-primary">
-                <a href="{{ path('content_index') }}"> <span class="btn-label"><i class="fas fa-arrow-left"></i></span>
-                    back to list</a></button>
+
+                <a class="btn btn-outline-primary" href="{{ path('content_index') }}"> <span class="btn-label"><i class="fas fa-arrow-left"></i></span>
+                    back to list</a>
             <hr>
     <h5 class="post-title">Laissez un commentaire</h5>
 
