@@ -7,11 +7,9 @@
 <div class="container" id="down">
     <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
-
             <a class="scroll-to-top rounded" href="#page-top">
                 <i class="fas fa-angle-up"></i>
             </a>
-
             <div class="text">
                 <h1 class="post-title">{{ content.title }}  </h1>
                 <i style="color: green" class="fas fa-thumbs-up">{{ approvals.nbAcceptedApprovals }}</i>
@@ -118,6 +116,7 @@
 {% endblock %}
 
 {% block javascripts %}
+    {{ parent() }}
     <script language="javascript"
             src="https://code.jquery.com/jquery-2.2.4.min.js">
     </script>
