@@ -10,7 +10,7 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <a href="{{ path('home') }}">Home </a>
-
+                </li>
 
                 <li class="nav-item">
                     <a class="nav-link js-scroll-trigger" href="{{ path('content_index') }}"> Publications </a>
@@ -23,33 +23,21 @@
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                     > Mon Espace </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                            <a class="dropdown-item"  href="{{ path('user_show', {'id': app.user.id}) }}">Mon profil</a>
-                            <a class="dropdown-item"  href="{{ path('user_submissions', {'id': app.user.id}) }}">Mes soumissions</a>
+                        <a class="dropdown-item"  href="{{ path('user_show', {'id': app.user.id}) }}">Mon profil</a>
+                        <a class="dropdown-item"  href="{{ path('user_submissions', {'id': app.user.id}) }}">Mes soumissions</a>
 
-                            {% if app.user.roles.0 in ['ROLE_ADMIN', 'ROLE_COMM', 'ROLE_REVIEWER'] %}
-                                <a class="dropdown-item" href="{{ path('user_reviews', {'id': app.user.id}) }}">Mes Reviews</a>
-                            {% endif %}
-                            {% if app.user.roles.0 in ['ROLE_ADMIN', 'ROLE_COMM'] %}
-                                <a class="dropdown-item" href="{{ path('user_publications', {'id': app.user.id}) }}">Mes Publications</a>
-                            {% endif %}
-                        {%endif%}
+                        {% if app.user.roles.0 in ['ROLE_ADMIN', 'ROLE_COMM', 'ROLE_REVIEWER'] %}
+                            <a class="dropdown-item" href="{{ path('user_reviews', {'id': app.user.id}) }}">Mes Reviews</a>
+                        {% endif %}
+                        {% if app.user.roles.0 in ['ROLE_ADMIN', 'ROLE_COMM'] %}
+                            <a class="dropdown-item" href="{{ path('user_publications', {'id': app.user.id}) }}">Mes Publications</a>
+                        {% endif %}
+                        {% if app.user.roles.0 in ['ROLE_ADMIN', 'ROLE_COMM'] %}
+                                <a class="dropdown-item" href="{{ path('dashboard_index') }}">Communication Dashboard</a>
+                        {% endif %}
                     </div>
 
                 </li>
-
-
-                </li>
-                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    {% if app.user.roles.0 in ['ROLE_ADMIN', 'ROLE_COMM'] %}
-                        <li class="nav-item">
-                            <a href="{{ path('dashboard_index') }}">Communication Dashboard</a>
-                        </li>
-                    {% endif %}
-                {% endif %}
-
-
-
 
                 <li class="nav-item">
                     {% if not is_granted('IS_AUTHENTICATED_FULLY') %}

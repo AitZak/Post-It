@@ -4,118 +4,114 @@
 
 {% block body %}
     <div id="page-top">
-        <div class="container" id="down">
-            <div class="row">
-                <div class="col-lg-8 col-md-10 mx-auto">
+<div class="container" id="down">
+    <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
 
-                    <a class="scroll-to-top rounded" href="#page-top">
-                        <i class="fas fa-angle-up"></i>
-                    </a>
+            <a class="scroll-to-top rounded" href="#page-top">
+                <i class="fas fa-angle-up"></i>
+            </a>
 
-                    <div class="text">
-                        <h1 class="post-title">{{ content.title }}  </h1>
-                        <i style="color: green" class="fas fa-thumbs-up">{{ approvals.nbAcceptedApprovals }}</i>
-                        <i style="color: red" class="fas fa-thumbs-down">{{ approvals.nbRejectedApprovals }}</i>
-                    </div>
+            <div class="text">
+                <h1 class="post-title">{{ content.title }}  </h1>
+                <i style="color: green" class="fas fa-thumbs-up">{{ approvals.nbAcceptedApprovals }}</i>
+                <i style="color: red" class="fas fa-thumbs-down">{{ approvals.nbRejectedApprovals }}</i>
+            </div>
 
-                    <h1 class="post-title" style="display: inline-block">
+            <h1 class="post-title" style="display: inline-block">
 
-                        {% if content.statut == 1 %}
-                            <br>
-                            <button class="btn btn-success" id="publish" name="publish">Publier</button>
+                {% if content.statut == 1 %}
+                    <br>
+                    <button class="btn btn-success" id="publish" name="publish">Publier</button>
+                {% endif %}
+
+                <h3>Review</h3>
+                {% if app.user.id != content.userSubmit.id%}
+                    {% if currentUser.roles.0 in ['ROLE_REVIEWER', 'ROLE_COMM', 'ROLE_ADMIN'] %}
+                        {% if currentUserApproval is empty %}
+                            <p>Vous n'avez pas encore émis de review.</p>
+                        {% elseif currentUserApproval.status == 1 %}
+                            <p>Vous avez accepté ce contenu.</p>
+                        {% elseif currentUserApproval.status == 2 %}
+                            <p>Vous avez refusé ce contenu.</p>
                         {% endif %}
+                        <button {% if currentUserApproval is not empty and currentUserApproval.status == 2 %} style="opacity: 25%" {% endif %} class="btn btn-success review" value="1">Approved</button>
+                        <button {% if currentUserApproval is not empty and currentUserApproval.status == 1 %} style="opacity: 25%" {% endif %} class="btn btn-danger review" value="2">Rejected</button>
+                    {% endif  %}
+                {% endif  %}
 
-                        <h3>Review</h3>
-                        {% if app.user.id != content.userSubmit.id %}
-                            {% if currentUser.roles.0 in ['ROLE_REVIEWER', 'ROLE_COMM', 'ROLE_ADMIN'] %}
-                                {% if currentUserApproval is empty %}
-                                    <p>Vous n'avez pas encore émis de review.</p>
-                                {% elseif currentUserApproval.status == 1 %}
-                                    <p>Vous avez accepté ce contenu.</p>
-                                {% elseif currentUserApproval.status == 2 %}
-                                    <p>Vous avez refusé ce contenu.</p>
-                                {% endif %}
-                                <button {% if currentUserApproval is not empty and currentUserApproval.status == 2 %} style="opacity: 25%" {% endif %}
-                                        class="btn btn-success review" value="1">Approved
-                                </button>
-                                <button {% if currentUserApproval is not empty and currentUserApproval.status == 1 %} style="opacity: 25%" {% endif %}
-                                        class="btn btn-danger review" value="2">Rejected
-                                </button>
-                            {% endif %}
-                        {% endif %}
-
-                        {% if app.user.id == content.userSubmit.id %}
-                            <br>
-                            <p>Vous ne pouvez pas donner votre approbation sur votre propre publication</p>
-                            <br>
-                        {% endif %}
-
-                        <br>
-                        {{ include('content/_delete_form.html.twig') }}
-                        <br>
-                    </h1>
+                {% if app.user.id == content.userSubmit.id%}
+                    <br>
+                    <p>Vous ne pouvez pas donner votre approbation sur votre propre publication</p>
+                    <br>
+                {% endif  %}
 
 
-                    <table class="table table-bordered">
-                        <thead class="thead-dark">
-                        <tbody>
-                        <tr>
-                            <th scope="col">Id</th>
-                            <td>{{ content.id }}</td>
-                        </tr>
-                        <tr>
-                            <th scope="col">Title</th>
-                            <td>{{ content.title }}</td>
-                        </tr>
-                        <tr>
-                            <th scope="col">Description</th>
-                            <td>{{ content.description }}</td>
-                        </tr>
-                        <tr>
-                            <th scope="col">File</th>
-                            <td>{{ content.file }}</td>
-                        </tr>
-                        <tr>
-                            <th scope="col">SubmitUser</th>
-                            <td>{{ content.userSubmit.firstname ? content.userSubmit.firstname : '' }}</td>
-                        </tr>
-                        <tr>
-                            <th scope="col">SubmitDate</th>
-                            <td>{{ content.submitDate ? content.submitDate|date('Y-m-d H:i:s') : '' }}</td>
-                        </tr>
-                        <tr>
-                            <th scope="col">ApprovalDate</th>
-                            <td>{{ content.approvalDate ? content.approvalDate|date('Y-m-d H:i:s') : '' }}</td>
-                        </tr>
-                        <tr>
-                            <th scope="col">PublicationDate</th>
-                            <td>{{ content.publicationDate ? content.publicationDate|date('Y-m-d H:i:s') : '' }}</td>
-                        </tr>
-                        </tbody>
-                    </table>
 
-                    <a class="btn btn-outline-primary" href="{{ path('content_edit', {'id': content.id}) }}"><span
-                                class="btn-label"><i class="fas fa-edit"></i></span>
-                        edit</a>
+                <br>
+                {{ include('content/_delete_form.html.twig') }}
+                <br>
+            </h1>
 
 
-                    <a class="btn btn-outline-primary" href="{{ path('content_index') }}"> <span class="btn-label"><i
-                                    class="fas fa-arrow-left"></i></span>
-                        back to list</a>
-                    <hr>
-                    <h5 class="post-title">Laissez un commentaire</h5>
+    <table class="table table-bordered"  >
+        <thead class="thead-dark">
+        <tbody>
+            <tr>
+                 <th scope="col">Id</th>
+                <td>{{ content.id }}</td>
+            </tr>
+            <tr>
+                 <th scope="col">Title</th>
+                <td>{{ content.title }}</td>
+            </tr>
+            <tr>
+                 <th scope="col">Description</th>
+                <td>{{ content.description }}</td>
+            </tr>
+            <tr>
+                 <th scope="col">File</th>
+                <td>{{ content.file }}</td>
+            </tr>
+            <tr>
+                 <th scope="col">SubmitUser</th>
+                <td>{{ content.userSubmit.firstname ? content.userSubmit.firstname : '' }}</td>
+            </tr>
+            <tr>
+                 <th scope="col">SubmitDate</th>
+                <td>{{ content.submitDate ? content.submitDate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                 <th scope="col">ApprovalDate</th>
+                <td>{{ content.approvalDate ? content.approvalDate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                 <th scope="col">PublicationDate</th>
+                <td>{{ content.publicationDate ? content.publicationDate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
 
-                    {{ include('comment/_form.html.twig') }}
+            <h1 class="post-title" style="display: inline-block">
+                <a class="btn btn-outline-primary" href="{{ path('content_index') }}"> <span class="btn-label"><i class="fas fa-arrow-left"></i></span>
+                    back to list</a>
+            <a class="btn btn-outline-primary" href="{{ path('content_edit', {'id': content.id}) }}"><span class="btn-label"><i class="fas fa-edit"></i></span>
+                edit</a>
+            </h1>
+            <hr>
+    <h5 class="post-title">Laissez un commentaire</h5>
 
-                    <h5>Commentaires</h5>
+                {{ include('comment/_form.html.twig') }}
 
-                    {{ include('comment/comment.html.twig') }}
+    <h5>Commentaires</h5>
+
+            {{ include('comment/comment.html.twig') }}
 
 
-                </div>
             </div>
         </div>
     </div>
+        </div>
 
 
 
@@ -126,25 +122,25 @@
             src="https://code.jquery.com/jquery-2.2.4.min.js">
     </script>
     <script>
-        $(function () {
-            $("#publish").click(function () {
+        $(function(){
+            $("#publish").click(function() {
                 $.ajax({
                     url: '{{ path('publish') }}',
                     type: 'GET',
-                    data: {contentId: {{ content.id }}},
+                    data: {contentId: {{content.id}}},
 
-                    success: function (data) {
+                    success: function(data) {
                         alert("contenu publié");
                         location.reload(true);
                     },
-                    error: function (xhr, textStatus, errorThrown) {
+                    error : function(xhr, textStatus, errorThrown) {
                         alert(errorThrown);
                     }
                 });
             });
         });
-        $(function () {
-            $(".review").click(function () {
+        $(function(){
+            $(".review").click(function() {
                 var contentStatus = $(this).val();
                 $.ajax({
                     url: '{{ path('approval_new') }}',
@@ -163,7 +159,7 @@
             });
         });
 
-        $(document).ready(function () {
+        $(document).ready(function(){
 
 
             $("[data-toggle=tooltip]").tooltip();
