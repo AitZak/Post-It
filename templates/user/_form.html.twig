@@ -21,7 +21,7 @@
                 </div>
                 {{ form_widget(form.email, { 'attr': { 'class': 'form-control' } }) }}
             </div>
-            {% if app.user.id == user.id %}
+            {% if app.user.id == user.id and app.user.roles.0 != 'ROLE_ADMIN'%}
             <div class="input-group form-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text"><i class="fas fa-key"></i></span>

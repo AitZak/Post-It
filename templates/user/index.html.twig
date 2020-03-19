@@ -31,7 +31,6 @@
         </thead>
         <tbody>
         {% for user in users %}
-            {% if app.user.id != user.id %}
             <tr>
                 <td>{{ user.id }}</td>
                 <td>{{ user.firstname }}</td>
@@ -48,7 +47,6 @@
                     <a href="{{ path('user_edit_admin', {'id': user.id}) }}"><i class="fas fa-edit"></i></a>
                 </td>
             </tr>
-            {% endif %}
         {% else %}
             <tr>
                 <td colspan="7">no records found</td>
