@@ -32,38 +32,106 @@
         </thead>
         <tbody>
         {% for content in contents %}
-            <tr>
-
-                <td>{{ content.title }}</td>
-                <td>{{ content.description|raw }}</td>
-                {% if 'https://' in content.file %}
-                    <td><a target="_blank" href="{{ content.file }}"> <i class="fas fa-file"></i> </a></td>
-                {% else %}
-                    <td><a target="_blank" {% if content.file is not empty %} href="{{ asset('uploads/files/' ~ content.file) }}" {% endif %}> <i {% if content.file is empty %} style="opacity: 25%; touch-action: none;" {% endif %}class="fas fa-file"></i> </a></td>
-                {% endif %}
-                <td>{{ content.submitDate ? content.submitDate|date('Y-m-d H:i') : '' }}</td>
-                <td>
-                    {% if content.userSubmit %}
-                        {{ content.userSubmit.firstname }}
-                    {% else %}
-                        None
-                    {% endif %}
-                </td>
-                <td>{{ content.approvalDate ? content.approvalDate|date('Y-m-d H:i') : '' }}</td>
-                <td>{{ content.publicationDate ? content.publicationDate|date('Y-m-d H:i') : '' }}</td>
-                <td>
-                    <a href="{{ path('content_show', {'id': content.id}) }}"> <i class="fas fa-eye"></i></a>
-                    {% if app.user.roles.0 in ['ROLE_ADMIN', 'ROLE_COMM'] %}
-                        {% if content.statut == 1 %}
-                            <a href="{{ path('publish', {'contentId': content.id}) }}">publier</a>
+            {% if app.user.roles.0 == 'ROLE_USER' %}
+                {% if content.userSubmit.id == app.user.id %}
+                    <tr>
+                        <td>{{ content.title }}</td>
+                        <td>{{ content.description|raw }}</td>
+                        {% if 'https://' in content.file %}
+                            <td><a target="_blank" href="{{ content.file }}"> <i class="fas fa-file"></i> </a></td>
+                        {% else %}
+                            <td><a target="_blank" {% if content.file is not empty %} href="{{ asset('uploads/files/' ~ content.file) }}" {% endif %}> <i {% if content.file is empty %} style="opacity: 25%; touch-action: none;" {% endif %}class="fas fa-file"></i> </a></td>
                         {% endif %}
+                        <td>{{ content.submitDate ? content.submitDate|date('Y-m-d H:i') : '' }}</td>
+                        <td>
+                            {% if content.userSubmit %}
+                                {{ content.userSubmit.firstname }}
+                            {% else %}
+                                None
+                            {% endif %}
+                        </td>
+                        <td>{{ content.approvalDate ? content.approvalDate|date('Y-m-d H:i') : '' }}</td>
+                        <td>{{ content.publicationDate ? content.publicationDate|date('Y-m-d H:i') : '' }}</td>
+                        <td>
+                            <a href="{{ path('content_show', {'id': content.id}) }}"> <i class="fas fa-eye"></i></a>
+                            {% if app.user.roles.0 in ['ROLE_ADMIN', 'ROLE_COMM'] %}
+                                {% if content.statut == 1 %}
+                                    <a href="{{ path('publish', {'contentId': content.id}) }}">publier</a>
+                                {% endif %}
+                            {% endif %}
+                            {% if app.user.id == content.userSubmit.id or app.user.roles.0 in ['ROLE_ADMIN', 'ROLE_COMM', 'ROLE_REVIEWER'] %}
+                                <a href="{{ path('content_edit', {'id': content.id}) }}"> <i class="fas fa-edit"></i></a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endif %}
+            {% if app.user.roles.0 == 'ROLE_REVIEWER' %}
+                {% if content.statut in [0, 1] %}
+                    <tr>
+                        <td>{{ content.title }}</td>
+                        <td>{{ content.description|raw }}</td>
+                        {% if 'https://' in content.file %}
+                            <td><a target="_blank" href="{{ content.file }}"> <i class="fas fa-file"></i> </a></td>
+                        {% else %}
+                            <td><a target="_blank" {% if content.file is not empty %} href="{{ asset('uploads/files/' ~ content.file) }}" {% endif %}> <i {% if content.file is empty %} style="opacity: 25%; touch-action: none;" {% endif %}class="fas fa-file"></i> </a></td>
+                        {% endif %}
+                        <td>{{ content.submitDate ? content.submitDate|date('Y-m-d H:i') : '' }}</td>
+                        <td>
+                            {% if content.userSubmit %}
+                                {{ content.userSubmit.firstname }}
+                            {% else %}
+                                None
+                            {% endif %}
+                        </td>
+                        <td>{{ content.approvalDate ? content.approvalDate|date('Y-m-d H:i') : '' }}</td>
+                        <td>{{ content.publicationDate ? content.publicationDate|date('Y-m-d H:i') : '' }}</td>
+                        <td>
+                            <a href="{{ path('content_show', {'id': content.id}) }}"> <i class="fas fa-eye"></i></a>
+                            {% if app.user.roles.0 in ['ROLE_ADMIN', 'ROLE_COMM'] %}
+                                {% if content.statut == 1 %}
+                                    <a href="{{ path('publish', {'contentId': content.id}) }}">publier</a>
+                                {% endif %}
+                            {% endif %}
+                            {% if app.user.id == content.userSubmit.id or app.user.roles.0 in ['ROLE_ADMIN', 'ROLE_COMM', 'ROLE_REVIEWER'] %}
+                                <a href="{{ path('content_edit', {'id': content.id}) }}"> <i class="fas fa-edit"></i></a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endif %}
+            {% if app.user.roles.0 in ['ROLE_ADMIN', 'ROLE_COMM'] %}
+                <tr>
+                    <td>{{ content.title }}</td>
+                    <td>{{ content.description|raw }}</td>
+                    {% if 'https://' in content.file %}
+                        <td><a target="_blank" href="{{ content.file }}"> <i class="fas fa-file"></i> </a></td>
+                    {% else %}
+                        <td><a target="_blank" {% if content.file is not empty %} href="{{ asset('uploads/files/' ~ content.file) }}" {% endif %}> <i {% if content.file is empty %} style="opacity: 25%; touch-action: none;" {% endif %}class="fas fa-file"></i> </a></td>
                     {% endif %}
-                    {% if app.user.id == content.userSubmit.id or app.user.roles.0 in ['ROLE_ADMIN', 'ROLE_COMM', 'ROLE_REVIEWER'] %}
-                        <a href="{{ path('content_edit', {'id': content.id}) }}"> <i class="fas fa-edit"></i></a>
-                    {% endif %}
-                </td>
-
-            </tr>
+                    <td>{{ content.submitDate ? content.submitDate|date('Y-m-d H:i') : '' }}</td>
+                    <td>
+                        {% if content.userSubmit %}
+                            {{ content.userSubmit.firstname }}
+                        {% else %}
+                            None
+                        {% endif %}
+                    </td>
+                    <td>{{ content.approvalDate ? content.approvalDate|date('Y-m-d H:i') : '' }}</td>
+                    <td>{{ content.publicationDate ? content.publicationDate|date('Y-m-d H:i') : '' }}</td>
+                    <td>
+                        <a href="{{ path('content_show', {'id': content.id}) }}"> <i class="fas fa-eye"></i></a>
+                        {% if app.user.roles.0 in ['ROLE_ADMIN', 'ROLE_COMM'] %}
+                            {% if content.statut == 1 %}
+                                <a href="{{ path('publish', {'contentId': content.id}) }}">publier</a>
+                            {% endif %}
+                        {% endif %}
+                        {% if app.user.id == content.userSubmit.id or app.user.roles.0 in ['ROLE_ADMIN', 'ROLE_COMM', 'ROLE_REVIEWER'] %}
+                            <a href="{{ path('content_edit', {'id': content.id}) }}"> <i class="fas fa-edit"></i></a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endif %}
         {% else %}
             <tr>
                 <td colspan="8">no records found</td>

@@ -3,39 +3,46 @@
 {% block title %}Edit User{% endblock %}
 
 {% block body %}
-<div class="container" id="down">
-    <div class="row">
-        <div class="col-lg-8 col-md-10 mx-auto">
+    <div class="container" id="down">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
 
 
-    {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
+                {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
 
-            <div class="col-lg-10 btn-group" >
+                <div class="col-lg-10 btn-group">
 
-    {{ include('user/_delete_form.html.twig') }}
+                    {% if app.user.roles.0 == 'ROLE_ADMIN' %}
+                        {{ include('user/_delete_form.html.twig') }}
+                    {% endif %}
 
-    {% for role in user.roles %}
-        {% if role == 'ROLE_COMM' %}
-            <h3>Ajouter un réseau social</h3>
-            <form method="post" action="{{ path('userSocialNetwork_add', {'idUser': user.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
-                <select name="SN-select" id="SN-select">
-                    {% for socialNetwork in socialNetworks %}
-                        <option value="{{ socialNetwork.id }}">{{socialNetwork.name}}</option>
+                    {% for role in app.user.roles %}
+                        {% if role == 'ROLE_ADMIN' or role == 'ROLE_COMM' %}
+                            <h3>Ajouter un réseau social</h3>
+                            <form method="post" action="{{ path('userSocialNetwork_add', {'idUser': user.id}) }}"
+                                  onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                <select name="SN-select" id="SN-select">
+                                    {% for socialNetwork in socialNetworks %}
+                                        <option value="{{ socialNetwork.id }}">{{ socialNetwork.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <button class="btn">ajouter</button>
+                            </form>
+                            {% for socialNetwork in user.socialNetwork %}
+                                <form method="post"
+                                      action="{{ path('userSocialNetwork_delete', {'idUser': user.id }) }}"
+                                      onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                    <p> {{ socialNetwork.name }}
+                                        <button class="btn">supprimer</button>
+                                    </p>
+                                    <input id="SN-select" name="SN-select" type="hidden" value="{{ socialNetwork.id }}">
+                                </form>
+                            {% endfor %}
+                        {% endif %}
                     {% endfor %}
-                </select>
-                <button class="btn">ajouter</button>
-            </form>
-            {% for socialNetwork in user.socialNetwork %}
-                <form method="post" action="{{ path('userSocialNetwork_delete', {'idUser': user.id }) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
-                    <p> {{socialNetwork.name}} <button class="btn">supprimer</button></p>
-                    <input id="SN-select" name="SN-select" type="hidden" value="{{ socialNetwork.id }}">
-                </form>
-            {% endfor %}
-        {% endif %}
-    {% endfor %}
 
+                </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}

@@ -151,6 +151,16 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if (in_array('ROLE_ADMIN', $user->getRoles())){
+                $user->setRoles(['ROLE_ADMIN']);
+            }
+            if (in_array('ROLE_COMM', $user->getRoles())){
+                $user->setRoles(['ROLE_COMM']);
+            }
+            if (in_array('ROLE_REVIEWER', $user->getRoles())){
+                $user->setRoles(['ROLE_REVIEWER']);
+            }
+
             $password = $passwordEncoder->encodePassword($user, $user->getPassword());
             $user->setPassword($password);
             $this->getDoctrine()->getManager()->flush();
@@ -192,6 +202,11 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
+            if ($this->getUser()->getRoles() !== ['ROLE_ADMIN']) {
+                return $this->render('user/show.html.twig',[
+                    'user' => $user,
+                ]);
+            }
             return $this->redirectToRoute('user_index');
         }
 
