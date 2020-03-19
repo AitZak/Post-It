@@ -34,10 +34,6 @@ class ContentController extends AbstractController
             return $this->render('main/error_connection.html.twig');
         }
 
-        if ($this->getUser()->getRoles() !== ['ROLE_ADMIN'] && $this->getUser()->getRoles() !== ['ROLE_COMM']) {
-            return $this->render('main/error_role.html.twig');
-        }
-
         $contents = $this->getDoctrine()
             ->getRepository(Content::class)
             ->findAll();
