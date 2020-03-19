@@ -8,13 +8,13 @@
         <div class="col-lg-8 col-md-10 mx-auto">
 
 
-    {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('user/_form.html.twig', {'button_label': 'Editer'}) }}
 <hr>
             {% for role in user.roles %}
                 {% if role == 'ROLE_COMM' %}
                     <p>Ajouter un réseau social</p>
             <div class="col-lg-10 btn-group" >
-                    <form class="input-group form-group" method="post" action="{{ path('userSocialNetwork_add', {'idUser': user.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                    <form class="input-group form-group" method="post" action="{{ path('userSocialNetwork_add', {'idUser': user.id}) }}" onsubmit="return confirm('êtes vous sur de vouloir supprimer cet objet ?');">
                         <select name="SN-select" id="SN-select">
                             {% for socialNetwork in socialNetworks %}
                                 <option value="{{ socialNetwork.id }}">{{socialNetwork.name}}</option>
@@ -24,7 +24,7 @@
                     </form>
                     </div>
                     {% for socialNetwork in user.socialNetwork %}
-                        <form method="post" action="{{ path('userSocialNetwork_delete', {'idUser': user.id }) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                        <form method="post" action="{{ path('userSocialNetwork_delete', {'idUser': user.id }) }}" onsubmit="return confirm('êtes vous sur de vouloir supprimer cet objet ?');">
                             <p> {{socialNetwork.name}} <button class="btn">supprimer</button></p>
                             <input id="SN-select" name="SN-select" type="hidden" value="{{ socialNetwork.id }}">
                         </form>
