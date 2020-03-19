@@ -3,36 +3,51 @@
 {% block title %}Content{% endblock %}
 
 {% block body %}
-<div id="page-top">
+    <div id="page-top">
 <div class="container" id="down">
     <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
+
             <a class="scroll-to-top rounded" href="#page-top">
                 <i class="fas fa-angle-up"></i>
             </a>
-            <h1 class="post-title">{{ content.title }}
-                <span class="btn-label"><i style="color: green" class="fas fa-thumbs-up">{{ approvals.nbAcceptedApprovals }}</i></span>
-                <span class="btn-label"><i style="color: red" class="fas fa-thumbs-down">{{ approvals.nbRejectedApprovals }}</i></span>
-            </h1>
+
+            <div class="text">
+                <h1 class="post-title">{{ content.title }}  </h1>
+                <i style="color: green" class="fas fa-thumbs-up">{{ approvals.nbAcceptedApprovals }}</i>
+                <i style="color: red" class="fas fa-thumbs-down">{{ approvals.nbRejectedApprovals }}</i>
+            </div>
+
             <h1 class="post-title" style="display: inline-block">
+                <h3>Review</h3>
+
+                <button class="btn btn-success review" value="1">Approved</button>
+                <button class="btn btn-danger review" value="2">Rejected</button>
+
+                {% if content.statut == 1 %}
+                    <button class="btn btn-success" id="publish" name="publish">Publier</button>
+                {% endif %}
 
                 {% if currentUser.roles.0 in ['ROLE_REVIEWER', 'ROLE_COMM', 'ROLE_ADMIN'] %}
-                {% if currentUserApproval is empty %}
-                    <p class="h4">Vous n'aveé pas encore émis de review.</p>
-                {% elseif currentUserApproval.status == 1 %}
-                    <p class="h4">Vous avez accepté ce contenu.</p>
-                {% elseif currentUserApproval.status == 2 %}
-                    <p class="h4">Vous avez refusé ce contenu.</p>
-                {% endif %}
-                <button {% if currentUserApproval is not empty and currentUserApproval.status == 2 %} style="opacity: 25%" {% endif %} class="btn btn-success"  value="1"><span class="btn-label"><i class="fas fa-check"></i></span> Approuvé</button>
-                <button {% if currentUserApproval is not empty and currentUserApproval.status == 1 %} style="opacity: 25%" {% endif %}class="btn btn-danger" value="2"> <span class="btn-label"><i class="fas fa-ban"></i></span> Rejeté</button>
+                    {% if currentUserApproval is empty %}
+                        <p>Vous n'aveé pas encore émis de review.</p>
+                    {% elseif currentUserApproval.status == 1 %}
+                        <p>Vous avez accepté ce contenu.</p>
+                    {% elseif currentUserApproval.status == 2 %}
+                        <p>Vous avez refusé ce contenu.</p>
+                    {% endif %}
+                    <button {% if currentUserApproval is not empty and currentUserApproval.status == 2 %} style="opacity: 25%" {% endif %} class="btn btn-success" value="1">Approved</button>
+                    <button {% if currentUserApproval is not empty and currentUserApproval.status == 1 %} style="opacity: 25%" {% endif %} class="btn btn-danger" value="2">Rejected</button>
                 {% endif  %}
 
                 <button type="submit" class="btn btn-outline-primary">
                     <a href="{{ path('content_edit', {'id': content.id}) }}"><span class="btn-label"><i class="fas fa-edit"></i></span>
                         edit</a></button>
+                <br>
+                {{ include('content/_delete_form.html.twig') }}
+                <br>
             </h1>
-               {{ include('content/_delete_form.html.twig') }}
+
 
     <table class="table table-bordered"  >
         <thead class="thead-dark">
@@ -71,10 +86,10 @@
             </tr>
         </tbody>
     </table>
-                <button type="submit" class="btn btn-outline-primary">
-                    <a href="{{ path('content_index') }}"> <span class="btn-label"><i
-                                    class="fas fa-arrow-left"></i></span>
-                        back to list</a></button>
+
+            <button type="submit" class="btn btn-outline-primary">
+                <a href="{{ path('content_index') }}"> <span class="btn-label"><i class="fas fa-arrow-left"></i></span>
+                    back to list</a></button>
             <hr>
     <h5 class="post-title">Laissez un commentaire</h5>
 
@@ -83,12 +98,12 @@
     <h5>Commentaires</h5>
 
             {{ include('comment/comment.html.twig') }}
-    <br>
+
 
             </div>
         </div>
     </div>
-</div>
+        </div>
 
 
 
