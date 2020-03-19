@@ -3,6 +3,9 @@
 {% block title %}Content index{% endblock %}
 
 {% block body %}
+    {% include 'main/head.html.twig' %}
+    {% include 'main/js.html.twig' %}
+
 <div id="page-top">
 <div class="container" id="down">
     <div class="row">
@@ -15,7 +18,7 @@
                 <a href="{{ path('content_new') }}" ><span class="btn-label"><i class="fas fa-plus" ></i></span>
                     New</a></button>
             <hr>
-            <table class="table content_index" style="font-size: 17px">
+            <table class="table content_index" style="font-size: 17px" id="content_table">
                 <thead class="thead-dark">
 
             <tr>
@@ -80,5 +83,12 @@
     </div>
 </div>
 </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $(document).ready( function () {
+            $('#content_table').DataTable();
+        } );
+    </script>
 {% endblock %}
 
