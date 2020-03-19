@@ -31,10 +31,10 @@
     {{ form_widget(form.clientSecret, { 'attr': { 'class': 'form-control' } }) }}
     </div>
 
-                <div class="col-lg-10 btn-group" >
-                <button type="submit" class="btn btn-outline-primary">
-                    <a href="{{ path('social_network_index') }}"> <span class="btn-label"><i class="fas fa-arrow-left"></i></span>
-                        back to list</a></button>
+
+
+                    <a class="btn btn-outline-primary" href="{{ path('social_network_index') }}"> <span class="btn-label"><i class="fas fa-arrow-left"></i></span>
+                        back to list</a>
 
                 <button type="submit" class="btn btn-outline-success">
                 <span class="btn-label"><i class="fas fa-sign-in-alt"></i></span>   {{ button_label|default('Update') }}</button>
