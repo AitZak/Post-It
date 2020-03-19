@@ -3,6 +3,8 @@
 {% block title %}User index{% endblock %}
 
 {% block body %}
+    {% include 'main/head.html.twig' %}
+    {% include 'main/js.html.twig' %}
 <div id="page-top">
 <div class="container" id="down">
     <div class="row">
@@ -16,7 +18,7 @@
                 <a href="{{ path('user_new') }}"><span class="btn-label"><i class="fas fa-plus" ></i></span>
                     New</a></button>
             <hr>
-            <table class="table table-bordered"  >
+            <table class="table table-bordered" id="user_table">
                 <thead class="thead-dark">
                 
             <tr>
@@ -60,4 +62,11 @@
     </div>
 </div>
 </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $(document).ready( function () {
+            $('#user_table').DataTable();
+        } );
+    </script>
 {% endblock %}
