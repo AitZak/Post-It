@@ -4,8 +4,9 @@
 {% include 'main/header.html.twig' %}
     <body>
         {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        {% block javascripts %}
+            {% include 'main/js.html.twig' %}
+        {% endblock %}
     </body>
-{% include 'main/js.html.twig' %}
 {% include 'main/footer.html.twig' %}
 </html>
