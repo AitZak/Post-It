@@ -6,7 +6,7 @@
 <div class="container" id="down">
     <div class="row">
         <div class="col-lg-12 col-md-10 mx-auto">
-    <h1 class="post-title">SocialNetwork index</h1>
+    <h1 class="post-title">Réseaux Sociaux</h1>
 
 
                 <a class="btn btn-outline-dark" href="{{ path('social_network_new') }}" ><span class="btn-label"><i class="fas fa-plus" ></i></span>
@@ -22,17 +22,25 @@
                 <td>{{ social_network.id }}</td>
             </tr>
             <tr>
-                <th scope="col">Name</th>
+                <th scope="col">Nom</th>
                 <td>{{ social_network.name }}</td>
             </tr>
             <tr>
-                <th scope="col">ClientId</th>
+                <th scope="col">Client Id</th>
                 <td>{{ social_network.clientId }}</td>
             </tr>
             <tr>
-                <th scope="col">ClientSecret</th>
+                <th scope="col">Client Secret</th>
                 <td>{{ social_network.clientId }}</td>
             </tr>
+                <tr>
+                    <th scope="col">Token</th>
+                    <td>{{ social_network.tokenSecret }}</td>
+                </tr>
+                <tr>
+                    <th scope="col">Token Secret</th>
+                    <td>{{ social_network.clientSecret }}</td>
+                </tr>
             <tr>
                 <th scope="col">actions</th>
                 <td>
@@ -40,24 +48,13 @@
                     <a href="{{ path('social_network_edit', {'id': social_network.id}) }}"><i class="fas fa-edit"></i></a>
                 </td>
             </tr>
-            <tr>
-                <th>Client Secret</th>
-                <td>{{ social_network.token }}</td>
-            </tr>
-            <tr>
-                <th>Token</th>
-                <td>{{ social_network.tokenSecret }}</td>
-            </tr>
-             <tr>
-                 <th>Token Secret</th>
-                 <td>{{ social_network.clientSecret }}</td>
-             </tr>
+
         </thead>
 
 
         {% else %}
             <tr>
-                <td colspan="5">no records found</td>
+                <td colspan="5">Aucun résultat</td>
             </tr>
         {% endfor %}
         </tbody>

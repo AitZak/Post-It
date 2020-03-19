@@ -5,9 +5,9 @@
 {% block body %}
     <h1>Edit Approval</h1>
 
-    {{ include('approval/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('approval/_form.html.twig', {'button_label': 'Editer'}) }}
 
-    <a href="{{ path('approval_index') }}">back to list</a>
+    <a href="{{ path('approval_index') }}">Retour à la liste</a>
 
     {{ include('approval/_delete_form.html.twig') }}
 {% endblock %}

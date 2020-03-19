@@ -3,9 +3,9 @@
 {% block title %}New Comment{% endblock %}
 
 {% block body %}
-    <h1>Create new Comment</h1>
+    <h1>Rédiger un commentaire</h1>
 
     {{ include('comment/_form.html.twig') }}
 
-    <a class="btn btn-outline-primary" href="{{ path('comment_index') }}"><span class="btn-label"><i class="fas fa-arrow-left"></i></span>back to list</a>
+    <a class="btn btn-outline-primary" href="{{ path('comment_index') }}"><span class="btn-label"><i class="fas fa-arrow-left"></i></span>retour à la liste</a>
 {% endblock %}

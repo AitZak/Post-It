@@ -18,11 +18,11 @@
                 <td>{{ user.id }}</td>
             </tr>
             <tr>
-                <th scope="col">Firstname</th>
+                <th scope="col">Prénom</th>
                 <td>{{ user.firstname }}</td>
             </tr>
             <tr>
-                <th scope="col">Lastname</th>
+                <th scope="col">Nom</th>
                 <td>{{ user.lastname }}</td>
             </tr>
             <tr>
@@ -30,7 +30,7 @@
                 <td>{{ user.email }}</td>
             </tr>
             <tr>
-                <th scope="col">Password</th>
+                <th scope="col">Mot de passe</th>
                 <td>{{ user.password }}</td>
             </tr>
             <tr>
@@ -42,7 +42,7 @@
                 </td>
             </tr>
             <tr>
-                <th scope="col">Social Networks</th>
+                <th scope="col">Réseaux Sociaux</th>
                 {% for socials in user.socialNetwork %}
                     <td>{{socials.name}}</td>
                 {% endfor %}
@@ -56,7 +56,7 @@
                         <a class="btn btn-outline-primary"
                            href="{{ path('user_index') }}">
                             <span class="btn-label"><i class="fas fa-arrow-left"></i></span>
-                            back to list</a>
+                            Retour à la liste</a>
                     {% endif %}
 
 

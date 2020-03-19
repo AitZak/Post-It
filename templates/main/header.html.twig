@@ -52,7 +52,7 @@
                     > Administration </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item"  href="{{ path('dashboard_index') }}">Dashbord</a>
-                        <a class="dropdown-item"  href="{{ path('social_network_index') }}">Socials</a>
+                        <a class="dropdown-item"  href="{{ path('social_network_index') }}">Réseaux Sociaux</a>
                         <a class="dropdown-item" {% if not is_granted('ROLE_ADMIN') %}hidden{%endif%} href="{{ path('user_index') }}"> Rôles </a>
 
                     </div>
