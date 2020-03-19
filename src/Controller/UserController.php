@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Content;
 use App\Entity\User;
+use App\Form\UserAdminType;
 use App\Form\UserType;
 use App\Manager\ApprovalManager;
 use App\Manager\CommentManager;
@@ -17,7 +18,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 
 
 /**
@@ -50,7 +53,9 @@ class UserController extends AbstractController
     /**
      * @Route("/new", name="user_new", methods={"GET","POST"})
      */
-    public function new(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function new(Request $request, UserPasswordEncoderInterface $passwordEncoder,
+                        \Swift_Mailer $mailer,
+                        TokenGeneratorInterface $tokenGenerator): Response
     {
         if ($this->getUser() === null) {
             return $this->render('main/error_connection.html.twig');
@@ -61,7 +66,7 @@ class UserController extends AbstractController
         }
 
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserAdminType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -75,12 +80,26 @@ class UserController extends AbstractController
                 $user->setRoles(['ROLE_REVIEWER']);
             }
 
-            $password = $passwordEncoder->encodePassword($user, $user->getPassword());
-            $user->setPassword($password);
+//            $password = $passwordEncoder->encodePassword($user, $user->getPassword());
+            $user->setPassword("init");
+            $token = $tokenGenerator->generateToken();
+            $user->setResetToken($token);
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
+            $url = $this->generateUrl('app_reset_password', array('token' => $token),
+                UrlGeneratorInterface::ABSOLUTE_URL);
+
+            $message = (new \Swift_Message('Forgot Password'))
+                ->setFrom('post.it.lyz@gmail.com')
+                ->setTo($user->getEmail())
+                ->setBody(
+                    "Voici un lien pour créer votre mot de passe: " . $url,
+                    'text/html'
+                );
+
+            $mailer->send($message);
 
             return $this->redirectToRoute('user_index');
         }
@@ -124,7 +143,7 @@ class UserController extends AbstractController
             return $this->render('main/error_connection.html.twig');
         }
 
-        if ($user !== $this->getUser() && $this->getUser()->getRoles() !== ['ROLE_ADMIN']) {
+        if ($user !== $this->getUser() ) {
             return $this->render('main/error_role.html.twig');
         }
 
@@ -134,6 +153,43 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $password = $passwordEncoder->encodePassword($user, $user->getPassword());
             $user->setPassword($password);
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('user_show',[
+                'id' => $user ->getId()
+            ]);
+        }
+
+        $socialNetworks = $socialNetworkRepository -> findAll();
+        return $this->render('user/edit.html.twig', [
+            'user' => $user,
+            'form' => $form->createView(),
+            'socialNetworks'=> $socialNetworks
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/edit/admin", name="user_edit_admin", methods={"GET","POST"})
+     * @param Request $request
+     * @param User $user
+     * @param $socialNetworkRepository
+     * @return Response
+     */
+    public function editAdmin(Request $request, User $user,
+                         SocialNetworkRepository $socialNetworkRepository): Response
+    {
+        if ($this->getUser() === null) {
+            return $this->render('main/error_connection.html.twig');
+        }
+
+        if ($user !== $this->getUser() && $this->getUser()->getRoles() !== ['ROLE_ADMIN']) {
+            return $this->render('main/error_role.html.twig');
+        }
+
+        $form = $this->createForm(UserAdminType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('user_index');

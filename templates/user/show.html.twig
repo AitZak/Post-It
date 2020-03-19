@@ -44,7 +44,7 @@
             <tr>
                 <th scope="col">Social Networks</th>
                 {% for socials in user.socialNetwork %}
-                    <td>{{socialNetWork.name}}</td>
+                    <td>{{socials.name}}</td>
                 {% endfor %}
             </tr>
 
@@ -57,9 +57,19 @@
             <span class="btn-label"><i class="fas fa-arrow-left"></i></span>
             back to list</a></button>
 
-        <button type="submit" class="btn btn-outline-primary">
-    <a href="{{ path('user_edit', {'id': user.id}) }}"><span class="btn-label"><i class="fas fa-edit"></i></span>
+            {% if app.user.roles.0 =='ROLE_ADMIN' and app.user.id != user.id%}
+            <button type="submit" class="btn btn-outline-primary">
+    <a href="{{ path('user_edit_admin', {'id': user.id}) }}"><span class="btn-label"><i class="fas fa-edit"></i></span>
         edit</a></button>
+            {% endif %}
+
+            {% if app.user.roles.0 in ['ROLE_USER', 'ROLE_COMM', 'ROLE_REVIEWER'] or (app.user.roles.0 =='ROLE_ADMIN' and
+                app.user.id == user.id)%}
+
+                <button type="submit" class="btn btn-outline-primary">
+                    <a href="{{ path('user_edit', {'id': user.id}) }}"><span class="btn-label"><i class="fas fa-edit"></i></span>
+                        edit</a></button>
+            {% endif %}
 
     {{ include('user/_delete_form.html.twig') }}
         </div>
