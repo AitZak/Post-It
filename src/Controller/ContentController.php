@@ -91,7 +91,7 @@ class ContentController extends AbstractController
             return $this->render('main/error_connection.html.twig');
         }
 
-        if ($content->getUserSubmit() !== $this->getUser() && $this->getUser()->getRoles() !== ['ROLE_ADMIN'] && $this->getUser()->getRoles() !== ['ROLE_COMM'] && $this->getUser()->getRoles() !== ['ROLE_REVIEWER']) {
+        if ($content->getStatut() !== 3 && $content->getUserSubmit() !== $this->getUser() && $this->getUser()->getRoles() !== ['ROLE_ADMIN'] && $this->getUser()->getRoles() !== ['ROLE_COMM'] && $this->getUser()->getRoles() !== ['ROLE_REVIEWER']) {
             return $this->render('main/error_role.html.twig');
         }
 
