@@ -3,8 +3,6 @@
 {% block title %}User index{% endblock %}
 
 {% block body %}
-    {% include 'main/head.html.twig' %}
-    {% include 'main/js.html.twig' %}
 <div id="page-top">
 <div class="container" id="down">
     <div class="row">
@@ -64,6 +62,7 @@
 </div>
 {% endblock %}
 {% block javascripts %}
+    {{ parent() }}
     <script>
         $(document).ready( function () {
             $('#user_table').DataTable();
