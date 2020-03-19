@@ -40,6 +40,12 @@
                     {% endif  %}
                 {% endif  %}
 
+                {% if app.user.id == content.userSubmit.id%}
+                    <br>
+                    <p>Vous ne pouvez pas donner votre approbation sur votre propre publication</p>
+                    <br>
+                {% endif  %}
+
                 <button type="submit" class="btn btn-outline-primary">
                     <a href="{{ path('content_edit', {'id': content.id}) }}"><span class="btn-label"><i class="fas fa-edit"></i></span>
                         edit</a></button>
