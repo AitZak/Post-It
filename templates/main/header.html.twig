@@ -23,6 +23,7 @@
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                     > Mon Espace </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item"  href="{{ path('user_show', {'id': app.user.id}) }}">Mon profil</a>
                         <a class="dropdown-item"  href="{{ path('user_submissions', {'id': app.user.id}) }}">Mes soumissions</a>
 
                         {% if app.user.roles.0 in ['ROLE_ADMIN', 'ROLE_COMM', 'ROLE_REVIEWER'] %}
