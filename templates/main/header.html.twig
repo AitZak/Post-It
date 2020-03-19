@@ -23,16 +23,17 @@
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                     > Mon Espace </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item"  href="{{ path('user_show', {'id': app.user.id}) }}">Mon profil</a>
-                        <a class="dropdown-item"  href="{{ path('user_submissions', {'id': app.user.id}) }}">Mes soumissions</a>
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                            <a class="dropdown-item"  href="{{ path('user_show', {'id': app.user.id}) }}">Mon profil</a>
+                            <a class="dropdown-item"  href="{{ path('user_submissions', {'id': app.user.id}) }}">Mes soumissions</a>
 
-                        {% if app.user.roles.0 in ['ROLE_ADMIN', 'ROLE_COMM', 'ROLE_REVIEWER'] %}
-                            <a class="dropdown-item" href="{{ path('user_reviews', {'id': app.user.id}) }}">Mes Reviews</a>
-                        {% endif %}
-                        {% if app.user.roles.0 in ['ROLE_ADMIN', 'ROLE_COMM'] %}
-                            <a class="dropdown-item" href="{{ path('user_publications', {'id': app.user.id}) }}">Mes Publications</a>
-                        {% endif %}
-
+                            {% if app.user.roles.0 in ['ROLE_ADMIN', 'ROLE_COMM', 'ROLE_REVIEWER'] %}
+                                <a class="dropdown-item" href="{{ path('user_reviews', {'id': app.user.id}) }}">Mes Reviews</a>
+                            {% endif %}
+                            {% if app.user.roles.0 in ['ROLE_ADMIN', 'ROLE_COMM'] %}
+                                <a class="dropdown-item" href="{{ path('user_publications', {'id': app.user.id}) }}">Mes Publications</a>
+                            {% endif %}
+                        {%endif%}
                     </div>
 
                 </li>
