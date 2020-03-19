@@ -1,37 +1,37 @@
 
 
 
-            <h1  class="post-title">Authentification</h1>
+
 {{ form_start(form) }}
             <div class="input-group form-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                    <span class="input-group-text"><i class="fas fa-user"></i> Prénom</span>
                 </div>
                 {{ form_widget(form.firstname, { 'attr': { 'class': 'form-control' } }) }}
             </div>
             <div class="input-group form-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                    <span class="input-group-text"><i class="fas fa-user"></i> Nom</span>
                 </div>
                 {{ form_widget(form.lastname, { 'attr': { 'class': 'form-control' } }) }}
             </div>
             <div class="input-group form-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                    <span class="input-group-text"><i class="fas fa-user"></i>Email</span>
                 </div>
                 {{ form_widget(form.email, { 'attr': { 'class': 'form-control' } }) }}
             </div>
             {% if app.user.id == user.id and app.user.roles.0 != 'ROLE_ADMIN'%}
             <div class="input-group form-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fas fa-key"></i></span>
+                    <span class="input-group-text"><i class="fas fa-key"></i>Mot de passe</span>
                 </div>
                 {{ form_widget(form.password.first, { 'attr': { 'class': 'form-control' } }) }}
             </div>
 
             <div class="input-group form-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fas fa-key"></i></span>
+                    <span class="input-group-text"><i class="fas fa-key"></i>Répeter mo de passe</span>
                 </div>
                 {{ form_widget(form.password.second, { 'attr': { 'class': 'form-control' } }) }}
             </div>
@@ -40,7 +40,7 @@
             {% if app.user.roles.0 == 'ROLE_ADMIN' and app.user.id != user.id %}
             <div class=" form-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fas fa-mouse-pointer"></i></span>
+                    <span class="input-group-text"><i class="fas fa-mouse-pointer"></i> </span>
                 </div>
                 {{ form_widget(form.roles, { 'attr': { 'class': 'form-control' } }) }}
             </div>
