@@ -3,11 +3,11 @@
 {% block title %}User{% endblock %}
 
 {% block body %}
-<div class="container" id="down">
-<div class="row">
-    <div class="col-lg-12 col-md-10 mx-auto">
-        <h1 class="post-title">Utilisateur :  {{ user.firstname }} </h1>
-        <h1></h1>
+    <div class="container" id="down">
+        <div class="row">
+            <div class="col-lg-12 col-md-10 mx-auto">
+                <h1 class="post-title">Utilisateur : {{ user.firstname }} </h1>
+                <h1></h1>
 
 
         <table class="table table-bordered" >
@@ -44,26 +44,40 @@
             <tr>
                 <th scope="col">Social Networks</th>
                 {% for socials in user.socialNetwork %}
-                    <td>{{socialNetWork.name}}</td>
+                    <td>{{socials.name}}</td>
                 {% endfor %}
             </tr>
 
-        </tbody>
+                    </tbody>
 
-    </table>
-        <div class="col-lg-10 btn-group" >
+                </table>
+                <div class="col-lg-10 btn-group">
+                    {% if app.user.roles.0 == 'ROLE_ADMIN' %}
+                        <a class="btn btn-outline-primary"
+                           href="{{ path('user_index') }}">
+                            <span class="btn-label"><i class="fas fa-arrow-left"></i></span>
+                            back to list</a>
+                    {% endif %}
 
-    <a class="btn btn-outline-primary" href="{{ path('user_index') }}">
-            <span class="btn-label"><i class="fas fa-arrow-left"></i></span>
-            back to list</a>
 
 
-    <a class="btn btn-outline-primary" href="{{ path('user_edit', {'id': user.id}) }}"><span class="btn-label"><i class="fas fa-edit"></i></span>
-        edit</a>
+            {% if app.user.roles.0 =='ROLE_ADMIN' and app.user.id != user.id%}
+                <a class="btn btn-outline-primary" href="{{ path('user_edit_admin', {'id': user.id}) }}"><span class="btn-label"><i class="fas fa-edit"></i></span>
+                    edit</a>
+            {% endif %}
 
-    {{ include('user/_delete_form.html.twig') }}
+            {% if app.user.roles.0 in ['ROLE_USER', 'ROLE_COMM', 'ROLE_REVIEWER'] or (app.user.roles.0 =='ROLE_ADMIN' and
+                app.user.id == user.id)%}
+
+                <a class="btn btn-outline-primary" href="{{ path('user_edit', {'id': user.id}) }}"><span class="btn-label"><i class="fas fa-edit"></i></span>
+                    edit</a>
+            {% endif %}
+
+                    {% if app.user.roles.0 == 'ROLE_ADMIN' %}
+                        {{ include('user/_delete_form.html.twig') }}
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </div>
-</div>
-</div>
 {% endblock %}

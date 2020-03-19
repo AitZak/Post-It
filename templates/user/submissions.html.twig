@@ -2,35 +2,40 @@
 
 {% block body %}
     <div class="container" id="down">
-    <div class="widget">
-    <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="widget">
+            <div class="col-lg-8 col-md-10 mx-auto">
 
-    <h3>En attente de review</h3>
-    <ul>
-        {% for content in submissions.unreviewedSubmissions%}
-            <li><a href="{{ path('content_show', {'id': content.id}) }}">{{ content.title }}</a></li>
-        {% endfor %}
-    </ul>
-    <h3>Soummissions acceptées</h3>
-    <ul>
-        {% for content in submissions.acceptedSubmissions%}
-            <li><a href="{{ path('content_show', {'id': content.id}) }}">{{ content.title }}</a></li>
-        {% endfor %}
-    </ul>
-    <h3>Soummissions refusés</h3>
-    <ul>
-        {% for content in submissions.refusedSubmissions%}
-            <li><a href="{{ path('content_show', {'id': content.id}) }}">{{ content.title }}</a></li>
-        {% endfor %}
-    </ul>
-    <h3>Soummissions Publiées</h3>
-    <ul>
-        {% for content in submissions.publishedSubmissions%}
-            <li><a href="{{ path('content_show', {'id': content.id}) }}">{{ content.title }}</a></li>
-        {% endfor %}
-    </ul>
+                <a class="btn btn-outline-dark" href="{{ path('content_new') }}"><span class="btn-label">
+                        <i class="fas fa-plus"></i></span>
+                    Nouveau Contenu
+                </a>
 
-    </div>
-    </div>
+                <h3>En attente de review</h3>
+                <ul>
+                    {% for content in submissions.unreviewedSubmissions %}
+                        <li><a href="{{ path('content_show', {'id': content.id}) }}">{{ content.title }}</a></li>
+                    {% endfor %}
+                </ul>
+                <h3>Soummissions acceptées</h3>
+                <ul>
+                    {% for content in submissions.acceptedSubmissions %}
+                        <li><a href="{{ path('content_show', {'id': content.id}) }}">{{ content.title }}</a></li>
+                    {% endfor %}
+                </ul>
+                <h3>Soummissions refusés</h3>
+                <ul>
+                    {% for content in submissions.refusedSubmissions %}
+                        <li><a href="{{ path('content_show', {'id': content.id}) }}">{{ content.title }}</a></li>
+                    {% endfor %}
+                </ul>
+                <h3>Soummissions Publiées</h3>
+                <ul>
+                    {% for content in submissions.publishedSubmissions %}
+                        <li><a href="{{ path('content_show', {'id': content.id}) }}">{{ content.title }}</a></li>
+                    {% endfor %}
+                </ul>
+
+            </div>
+        </div>
     </div>
 {% endblock %}
