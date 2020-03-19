@@ -35,8 +35,8 @@
                     {% elseif currentUserApproval.status == 2 %}
                         <p>Vous avez refusé ce contenu.</p>
                     {% endif %}
-                    <button {% if currentUserApproval is not empty and currentUserApproval.status == 2 %} style="opacity: 25%" {% endif %} class="btn btn-success" value="1">Approved</button>
-                    <button {% if currentUserApproval is not empty and currentUserApproval.status == 1 %} style="opacity: 25%" {% endif %} class="btn btn-danger" value="2">Rejected</button>
+                    <button {% if currentUserApproval is not empty and currentUserApproval.status == 2 %} style="opacity: 25%" {% endif %} class="btn btn-success review" value="1">Approved</button>
+                    <button {% if currentUserApproval is not empty and currentUserApproval.status == 1 %} style="opacity: 25%" {% endif %} class="btn btn-danger review" value="2">Rejected</button>
                 {% endif  %}
 
                 <button type="submit" class="btn btn-outline-primary">
