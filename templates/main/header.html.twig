@@ -13,22 +13,23 @@
                     <a href="{{ path('home') }}">Home </a>
                 </li>
 
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="{{ path('content_index') }}"> Publications </a>
+                    </li>
+                {% endif %}
+
                 <li class="nav-item dropdown">
 
                     <a {% if not is_granted('IS_AUTHENTICATED_FULLY') %}hidden{% endif %}
                        class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                     > Mon Espace </a>
-                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                <li class="nav-item">
-                    <a class="nav-link js-scroll-trigger" href="{{ path('content_index') }}"> Publications </a>
-                </li>
-                {% endif %}
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                         <a class="dropdown-item" href="{{ path('user_show', {'id': app.user.id}) }}">Mon profil</a>
                         <a class="dropdown-item" href="{{ path('user_submissions', {'id': app.user.id}) }}">Mes
-                            soumissions</a>
+                            Soumissions</a>
 
                         {% if app.user.roles.0 in ['ROLE_ADMIN', 'ROLE_COMM', 'ROLE_REVIEWER'] %}
                             <a class="dropdown-item" href="{{ path('user_reviews', {'id': app.user.id}) }}">Mes
