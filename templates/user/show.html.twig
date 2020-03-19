@@ -10,8 +10,9 @@
         <h1></h1>
 
 
-    <table class="table">
-        <tbody>
+        <table class="table table-bordered" >
+            <thead class="thead-dark">
+        <thead>
             <tr>
                 <th scope="col">Id</th>
                 <td>{{ user.id }}</td>
@@ -46,7 +47,9 @@
                     <td>{{socialNetWork.name}}</td>
                 {% endfor %}
             </tr>
+
         </tbody>
+
     </table>
         <div class="col-lg-10 btn-group" >
         <button type="submit" class="btn btn-outline-primary">
