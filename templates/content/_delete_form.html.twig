@@ -3,8 +3,8 @@
 <form method="post" action="{{ path('content_delete', {'id': content.id}) }}" onsubmit="return confirm('êtes vous sur de vouloir supprimer cet objet ?');">
     <input type="hidden" name="_method" value="DELETE">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ content.id) }}">
-    <button type="submit" class="btn btn-outline-danger ">
     {% if app.user.id == content.userSubmit.id or app.user.roles.0 in ['ROLE_ADMIN', 'ROLE_COMM'] %}
+    <button type="submit" class="btn btn-outline-danger ">
         <span class="btn-label"><i class="fas fa-trash-alt"></i></span> Supprimer</button>
     {% endif %}
 </form>
