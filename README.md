@@ -32,6 +32,7 @@ docker-compose exec web composer install
 docker-compose exec web php bin/console d:s:u --force
 docker-compose exec web php bin/console d:f:l
 ```
+> Notice : the last command generates fixtures. Thanks to it, you can connect yourself with email: admin@admin.fr  password: admin
 
 ### Functionalities
 
