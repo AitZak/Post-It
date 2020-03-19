@@ -41,14 +41,14 @@
         </tbody>
     </table>
             <div class="col-lg-10 btn-group" >
-            <button type="submit" class="btn btn-outline-primary">
-    <a href="{{ path('social_network_index') }}">
-        <span class="btn-label"><i class="fas fa-arrow-left"></i></span>
-        back to list</a></button>
 
-            <button type="submit" class="btn btn-outline-primary">
-    <a href="{{ path('social_network_edit', {'id': social_network.id}) }}"><span class="btn-label"><i class="fas fa-edit"></i></span>
-        edit</a></button>
+    <a class="btn btn-outline-primary" href="{{ path('social_network_index') }}">
+        <span class="btn-label"><i class="fas fa-arrow-left"></i></span>
+        back to list</a>
+
+
+    <a class="btn btn-outline-primary" href="{{ path('social_network_edit', {'id': social_network.id}) }}"><span class="btn-label"><i class="fas fa-edit"></i></span>
+        edit</a>
 
     {{ include('social_network/_delete_form.html.twig') }}
             </div>
