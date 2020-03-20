@@ -17,11 +17,13 @@
             </div>
 
             <h1 class="post-title" style="display: inline-block">
-
-                {% if content.statut == 1 %}
-                    <br>
-                    <button class="btn btn-success" id="publish" name="publish">Publier</button>
+                {% if currentUser.roles.0 in ['ROLE_COMM', 'ROLE_ADMIN'] %}
+                    {% if content.statut == 1 %}
+                        <br>
+                        <button class="btn btn-success" id="publish" name="publish">Publier</button>
+                    {% endif %}
                 {% endif %}
+
 
                 <h3>Review</h3>
                 {% if app.user.id != content.userSubmit.id%}
