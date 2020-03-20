@@ -52,8 +52,10 @@ class PublicationController extends AbstractController
                 $consumer_secret = $socialsNetwork -> getClientSecret();
                 $token = $socialsNetwork -> getToken();
                 $token_secret = $socialsNetwork -> getTokenSecret();
+                $end_point = 'blog/postit-lyz/post';
+                $base_uri ='https://api.tumblr.com/v2/';
                 $data = $tumblrApi->createData($contentValues);
-                $this -> postContent($data, $consumer_key, $consumer_secret, $token, $token_secret);
+                $this -> postContent($data, $consumer_key, $consumer_secret, $token, $token_secret, $end_point,$base_uri);
                 $publication = new Publication();
                 $publication->setUser($user);
                 $publication->setContent($content);
@@ -72,7 +74,7 @@ class PublicationController extends AbstractController
         return $this->redirectToRoute('content_index');
     }
 
-    public function postContent($data, $consumer_key, $consumer_secret, $token, $token_secret){
+    public function postContent($data, $consumer_key, $consumer_secret, $token, $token_secret, $endpoint, $base_uri){
         $stack = HandlerStack::create();
         $middleware = new Oauth1([
             'consumer_key' => $consumer_key,
@@ -82,16 +84,13 @@ class PublicationController extends AbstractController
         $stack->push($middleware);
 
         $client = new Client([
-            'base_uri' => 'https://api.tumblr.com/v2/',
+            'base_uri' => $base_uri,
             'handler' => $stack,
             'auth' => 'oauth',
             'headers' => [ 'Content-Type' => 'application/json' ]
         ]);
 
 
-        $res = $client->post('blog/androgynouskingtale/post',['body' => json_encode($data)]);
-//        $end = json_decode($res->getBody(), true);
-//        return $this->render('test.html.twig', [
-//            'test' => $end,]);
+        $res = $client->post($endpoint,['body' => json_encode($data)]);
     }
 }
